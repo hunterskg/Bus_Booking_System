@@ -95,5 +95,20 @@ public class Bus {
 
     public Bus() {
     }
+
+    @Override
+    public String toString() {
+return String.format(
+        "Bus Details:\n" +
+        "- Code: %s\n" +
+        "- Number: %s\n" +
+        "- Departing Station: %s\n" +
+        "- Arriving Station: %s\n" +
+        "- Departure Time: %.2f\n" +
+        "- Arrival Time: %.2f\n" +
+        "- Total Seats: %d\n" +
+        "- Booked Seats: %d",
+        bcode, bnum, dstation, astation, dtime, atime, seat, booked
+    );    }
     
 }
