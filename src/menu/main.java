@@ -4,6 +4,7 @@
  */
 package menu;
 
+import control.Manager;
 import linkedlist.BusLinkedList;
 import linkedlist.Node;
 import object.Bus;
@@ -15,21 +16,25 @@ import object.Bus;
 public class main {
     public static void main(String[] args) {
         linkedlist.BusLinkedList buslist = new BusLinkedList();
+        control.Manager input = new Manager();
         buslist.addLast(new Bus("B006", "101", "Station A", "Station B", 8.30, 10, 40, 10));
         buslist.addLast(new Bus("B002", "102", "Station C", "Station D", 9.00, 11, 50, 20));
         buslist.addLast(new Bus("B003", "103", "Station E", "Station F", 6.45, 8, 30, 15));
         buslist.addLast(new Bus("B004", "104", "Station G", "Station H", 12.15, 14, 45, 25));
         buslist.addLast(new Bus("B005", "105", "Station I", "Station J", 15.00, 17, 60, 30));
         buslist.traverse();
-        System.out.println("");
-        buslist.deleteByCode("B005");
+        Bus bus = input.inputBus(buslist);
+        buslist.addLast(bus);
         buslist.traverse();
-        System.out.println("");
-        buslist.sortByCode();
-        buslist.traverse();
-        System.out.println("");
-        Node x = buslist.searchByCode("B003");
-        System.out.println(x.info);
+//        System.out.println("");
+//        buslist.deleteByCode("B005");
+//        buslist.traverse();
+//        System.out.println("");
+//        buslist.sortByCode();
+//        buslist.traverse();
+//        System.out.println("");
+//        Node x = buslist.searchByCode("B003");
+//        System.out.println(x.info);
         
     }
 }

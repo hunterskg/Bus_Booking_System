@@ -22,7 +22,6 @@ public class BusLinkedList {
     public Node getTail() {
         return tail;
     }
-    
 
     public BusLinkedList() {
         head = null;
@@ -99,6 +98,85 @@ public class BusLinkedList {
         Bus temp = a.info;
         a.info = b.info;
         b.info = temp;
+    }
+
+    public void addAfterPositionK(Bus bus, int k) {
+        Node newNode = new Node(bus);
+        if (k < 0) {
+            System.err.println("Position must be >= 0");
+            return;
+        }
+        if (k == 0) {
+            if (head == null) {
+                head = tail = newNode;
+            } else {
+                newNode.next = head.next;
+                head.next = newNode;
+            }
+            return;
+        }
+        Node temp = head;
+        int index = 0;
+        while (temp != null && index < k) {
+            temp = temp.next;
+            index++;
+        }
+        if (temp == null) {
+            System.out.println("Out of list");
+            return;
+        }
+        newNode.next = temp.next;
+        temp.next = newNode;
+        if (temp == tail) {
+            tail = newNode;
+        }
+    }
+
+    public void deletePositionK(int k) {
+        if (k < 0) {
+            System.out.println("Position must be >= 0");
+            return;
+        }
+        if (head == null) {
+            System.out.println("The list is empty");
+            return;
+        }
+        if (k == 0) {
+            head = head.next;
+            if (head == null) {
+                tail = null;
+            }
+            return;
+        }
+        Node temp = head;
+        int index = 0;
+        while (temp != null && index < k - 1) {
+            temp = temp.next;
+            index++;
+        }
+        if (temp == null || temp.next == null) {
+            System.out.println("Out of list");
+            return;
+        }
+        Node p = temp.next;
+        temp.next = p.next;
+        if (p == tail) {
+            tail = temp;
+        }
+    }
+    public void searchByName(String name) {
+        Node temp = head;
+        boolean found = false;
+        while (temp != null) {
+            if (temp.info.getBnum().equalsIgnoreCase(name)) {
+                System.out.println(temp.info);
+                found = true;
+            }
+            temp = temp.next;
+        }
+        if (!found) {
+            System.out.println("Not found");
+        }
     }
 
 }
