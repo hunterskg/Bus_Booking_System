@@ -12,10 +12,10 @@ import object.Bus;
  */
 public class Node {
 
-    Bus info;
-    Node next;
+    public Bus info;
+    public Node next;
 
-    Node() {
+    public Node() {
     }
 
      public Node(Bus bus) {

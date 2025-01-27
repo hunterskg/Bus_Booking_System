@@ -12,7 +12,17 @@ import object.Bus;
  */
 public class BusLinkedList {
 
-    Node head, tail;
+    private Node head;
+    private Node tail;
+
+    public Node getHead() {
+        return head;
+    }
+
+    public Node getTail() {
+        return tail;
+    }
+    
 
     public BusLinkedList() {
         head = null;
@@ -65,10 +75,14 @@ public class BusLinkedList {
     public void deleteByCode(String code) {
         Node p = searchByCode(code);
         Node q = head;
-        while (q.next != p) {
-            q = q.next;
+        if (p == head) {
+            head = head.next;
+        } else {
+            while (q.next != p) {
+                q = q.next;
+            }
+            q.next = p.next;
         }
-        q.next = p.next;
     }
 
     public void sortByCode() {
