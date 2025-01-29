@@ -20,7 +20,7 @@ public class Node {
 
      public Node(Bus bus) {
         this.info = bus;
-        this.next = null; // Default to null for new nodes
+        this.next = null; 
     }
 
     public Node(Bus bus, Node next) {

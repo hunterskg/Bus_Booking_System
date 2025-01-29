@@ -5,8 +5,10 @@
 package menu;
 
 import control.Manager;
+import java.util.Date;
 import linkedlist.BusLinkedList;
 import linkedlist.Node;
+import object.Booking;
 import object.Bus;
 
 /**
@@ -14,27 +16,17 @@ import object.Bus;
  * @author FPT SHOP
  */
 public class main {
+
     public static void main(String[] args) {
-        linkedlist.BusLinkedList buslist = new BusLinkedList();
-        control.Manager input = new Manager();
-        buslist.addLast(new Bus("B006", "101", "Station A", "Station B", 8.30, 10, 40, 10));
-        buslist.addLast(new Bus("B002", "102", "Station C", "Station D", 9.00, 11, 50, 20));
-        buslist.addLast(new Bus("B003", "103", "Station E", "Station F", 6.45, 8, 30, 15));
-        buslist.addLast(new Bus("B004", "104", "Station G", "Station H", 12.15, 14, 45, 25));
-        buslist.addLast(new Bus("B005", "105", "Station I", "Station J", 15.00, 17, 60, 30));
-        buslist.traverse();
-        Bus bus = input.inputBus(buslist);
-        buslist.addLast(bus);
-        buslist.traverse();
-//        System.out.println("");
-//        buslist.deleteByCode("B005");
-//        buslist.traverse();
-//        System.out.println("");
-//        buslist.sortByCode();
-//        buslist.traverse();
-//        System.out.println("");
-//        Node x = buslist.searchByCode("B003");
-//        System.out.println(x.info);
-        
+        Booking booking1 = new Booking("B001", "P001", new Date(), 0, 5);
+        Booking booking2 = new Booking("B002", "P002", 1, 3); // Uses today's date
+
+        // Display bookings
+        System.out.println("\n--- Booking 1 ---");
+        System.out.println(booking1);
+
+        System.out.println("\n--- Booking 2 ---");
+        System.out.println(booking2);
+
     }
 }

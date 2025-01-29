@@ -4,6 +4,7 @@
  */
 package object;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
@@ -13,17 +14,26 @@ import java.util.Date;
 public class Booking {
     private String bcode;
     private String pcode;
+    SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
     private Date odate;
-    private Date paid;
+    private int paid;
     private int seat;
 
     public Booking() {
     }
 
-    public Booking(String bcode, String pcode, Date odate, Date paid, int seat) {
+    public Booking(String bcode, String pcode, Date odate, int paid, int seat) {
         this.bcode = bcode;
         this.pcode = pcode;
         this.odate = odate;
+        this.paid = paid;
+        this.seat = seat;
+    }
+
+    public Booking(String bcode, String pcode, int paid, int seat) {
+        this.bcode = bcode;
+        this.pcode = pcode;
+        this.odate = new Date(); 
         this.paid = paid;
         this.seat = seat;
     }
@@ -52,11 +62,11 @@ public class Booking {
         this.odate = odate;
     }
 
-    public Date getPaid() {
+    public int getPaid() {
         return paid;
     }
 
-    public void setPaid(Date paid) {
+    public void setPaid(int paid) {
         this.paid = paid;
     }
 
@@ -66,6 +76,20 @@ public class Booking {
 
     public void setSeat(int seat) {
         this.seat = seat;
+    }
+
+    public SimpleDateFormat getDateFormat() {
+        return dateFormat;
+    }
+
+    public void setDateFormat(SimpleDateFormat dateFormat) {
+        this.dateFormat = dateFormat;
+    }
+    
+
+    @Override
+    public String toString() {
+        return "Booking{" + "bcode=" + bcode + ", pcode=" + pcode + ", odate=" + dateFormat.format(odate) + ", paid=" + paid + ", seat=" + seat + '}';
     }
     
     
