@@ -4,6 +4,7 @@
  */
 package linkedlist;
 
+import java.io.*;
 import object.Bus;
 
 /**
@@ -14,6 +15,8 @@ public class BusLinkedList {
 
     private Node head;
     private Node tail;
+
+    String filePath = "Buses.txt";
 
     public Node getHead() {
         return head;
@@ -36,20 +39,34 @@ public class BusLinkedList {
         head = tail = null;
     }
 
-    public void traverse() {
-        Node q = head;
-        while (q != null) {
-            System.out.println(q.info);
-            q = q.next;
+    //1.1 Load Buslist from file
+    public void loadBusesFromFile() {
+        try {
+            BufferedReader bReader = new BufferedReader(
+                    new FileReader(filePath));
+            String readedFile;
+            while ((readedFile = bReader.readLine()) != null) {
+                String[] readedFileParts = readedFile.split(",");
+                if (readedFileParts.length == 8) {
+                    String bcode = readedFileParts[0].trim();
+                    String bnum = readedFileParts[1].trim();
+                    String dstation = readedFileParts[2].trim();
+                    String astation = readedFileParts[3].trim();
+                    double dtime = Double.parseDouble(readedFileParts[4].trim());
+                    int seat = Integer.parseInt(readedFileParts[5].trim());
+                    int booked = Integer.parseInt(readedFileParts[6].trim());
+                    double atime = Double.parseDouble(readedFileParts[7].trim());
+                    addLast(new Bus(bcode, bnum, dstation, astation, dtime, seat, booked, atime));
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
+        //Print list
+        traverse();
     }
 
-    public void addFirst(Bus bus) {
-        Node newNode = new Node(bus);
-        newNode.next = head;
-        head = newNode;
-    }
-
+    //1.2 Input and add to the end
     public void addLast(Bus bus) {
         if (isEmpty()) {
             head = tail = new Node(bus); // Both head and tail point to the new node
@@ -60,6 +77,30 @@ public class BusLinkedList {
         }
     }
 
+    //1.3 Display data
+    public void traverse() {
+        Node q = head;
+        while (q != null) {
+            System.out.println(q.info);
+            q = q.next;
+        }
+    }
+
+    //1.4 Save bus list to file
+    public void saveBusesToFile() {
+        try (BufferedWriter bwriter = new BufferedWriter(new FileWriter(filePath))) {
+            Node temp = head;
+            while (temp != null) {
+                bwriter.write(temp.info.toString());  // Write the booking data
+                bwriter.newLine();  // Move to the next line
+                temp = temp.next;  // Move to the next node
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    //1.5 Search by bcode
     public Node searchByCode(String code) {
         Node p = head;
         while (p != null) {
@@ -71,6 +112,7 @@ public class BusLinkedList {
         return null;
     }
 
+    //1.6 Delete by bcode
     public void deleteByCode(String code) {
         Node p = searchByCode(code);
         Node q = head;
@@ -84,6 +126,7 @@ public class BusLinkedList {
         }
     }
 
+    //1.7 Sort by bcode
     public void sortByCode() {
         for (Node a = head; a != null; a = a.next) {
             for (Node b = a.next; b != null; b = b.next) {
@@ -100,6 +143,14 @@ public class BusLinkedList {
         b.info = temp;
     }
 
+    //1.8 Input & add to beginning
+    public void addFirst(Bus bus) {
+        Node newNode = new Node(bus);
+        newNode.next = head;
+        head = newNode;
+    }
+
+    //1.9 add after position k
     public void addAfterPositionK(Bus bus, int k) {
         Node newNode = new Node(bus);
         if (k < 0) {
@@ -132,6 +183,7 @@ public class BusLinkedList {
         }
     }
 
+    //1.10 delete after position k
     public void deletePositionK(int k) {
         if (k < 0) {
             System.out.println("Position must be >= 0");
@@ -164,6 +216,8 @@ public class BusLinkedList {
             tail = temp;
         }
     }
+
+    //1.11 Search by name
     public void searchByName(String name) {
         Node temp = head;
         boolean found = false;
