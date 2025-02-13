@@ -61,7 +61,7 @@ public class Manager {
             if (valid.checkBcode(input, busList)) {
                 return input;
             } else {
-                System.err.println("Error: Code already exists or is invalid. Please try again.");
+                System.err.println("Code already exists or is invalid. Please try again.");
             }
         }
     }
