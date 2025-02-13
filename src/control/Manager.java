@@ -1,8 +1,14 @@
 package control;
 
+import java.util.Date;
 import java.util.Scanner;
+import linkedlist.BookingLinkedList;
 import linkedlist.BusLinkedList;
+import linkedlist.Node;
+import linkedlist.PassengerLinkedList;
+import object.Booking;
 import object.Bus;
+import object.Passenger;
 
 public class Manager {
 
@@ -23,14 +29,18 @@ public class Manager {
     }
 
     // Input an integer
-    public int inputInt(String msg) {
+    public int inputInt(String msg, String err, int min, int max) {
         while (true) {
+            int number = 0;
             System.out.print(msg);
             String input = sc.nextLine();
             if (valid.checkInt(input)) {
-                return Integer.parseInt(input);
+                number = Integer.parseInt(input);
+                if (number >= min && number <= max) {
+                    return number;
+                }
             } else {
-                System.err.println("Error: Invalid format. Please enter an integer.");
+                System.err.println(err);
             }
         }
     }
@@ -65,8 +75,6 @@ public class Manager {
             }
         }
     }
-    
-    
 
     // Input a Bus object
     public Bus inputBus(BusLinkedList busList) {
@@ -78,18 +86,82 @@ public class Manager {
         double dtime = inputDouble("Enter departing time (0-24): ", "Error: Time must be between 0 and 24.", 24, 0);
         double atime = inputDouble("Enter arriving time: ", "Error: Arrival time must be >= departing time and <= 24.", 24, dtime);
 
-        int seat = inputInt("Enter total seats: ");
-        while (seat <= 0) {
-            System.err.println("Error: Total seats must be greater than 0.");
-            seat = inputInt("Enter total seats: ");
-        }
+        int seat = inputInt("Enter total seats: ", "Error: Total seats must be greater than 0 and smaller than 96", 0, 96);
 
-        int booked = inputInt("Enter booked seats: ");
-        while (booked < 0 || booked > seat) {
-            System.err.println("Error: Booked seats must be between 0 and the total number of seats.");
-            booked = inputInt("Enter booked seats: ");
-        }
+        int booked = inputInt("Enter booked seats: ", "Seat must be between 0 and 96", 0, seat);
 
         return new Bus(bcode, bnum, dstation, astation, dtime, seat, booked, atime);
     }
+
+    // Input passenger
+    public Passenger inputPassenger(PassengerLinkedList passengerList) {
+        System.out.println("\n----- Enter Passenger Information -----");
+
+        // Ensure unique passenger code
+        String pcode = inputString("Enter passenger code: ");
+        while (passengerList.searchByPcode(pcode) != null) {
+            System.err.println("Error: Passenger code already exists. Please enter a unique code.");
+            pcode = inputString("Enter passenger code: "); // Ask for input again
+        }
+
+        String name = inputString("Enter passenger name: ");
+
+        // Ensure unique and valid phone number
+        String phone = inputString("Enter passenger phone number (must start with '0' and be 11 digits): ");
+        while (!phone.matches("0\\d{10}") || passengerList.searchByPhone(phone)) {
+            if (!phone.matches("0\\d{10}")) {
+                System.err.println("Error: Phone number must start with '0' and contain exactly 11 digits.");
+            } else {
+                System.err.println("Error: Phone number already exists. Please enter a unique phone number.");
+            }
+            phone = inputString("Enter passenger phone number (must start with '0' and be 11 digits): ");
+        }
+
+        return new Passenger(pcode, name, phone);
+    }
+    
+    //input booking 
+    public Booking inputBooking(BookingLinkedList bookingList, BusLinkedList busList, PassengerLinkedList passengerList) {
+        System.out.println("\n----- Enter Booking Information -----");
+
+        // Get valid bus code
+        String bcode = inputString("Enter bus code: ");
+        Node busToSearch = busList.searchByCode(bcode);
+        while (busToSearch == null) {
+            System.err.println("Error: Bus with code " + bcode + " not found.");
+            bcode = inputString("Enter a valid bus code: ");
+            busToSearch = busList.searchByCode(bcode);
+            
+        }
+
+        // Get valid passenger code
+        String pcode = inputString("Enter passenger code: ");
+        PassengerLinkedList.Node passenger = passengerList.searchByPcode(pcode);
+        while (passenger == null) {
+            System.err.println("Error: Passenger with code " + pcode + " not found.");
+            pcode = inputString("Enter a valid passenger code: ");
+            passenger = passengerList.searchByPcode(pcode);
+        }
+
+        // Ensure booking seats do not exceed available seats
+        Bus bus = new Bus();
+        int availableSeats = bus.getSeat() - bus.getBooked();
+        if (availableSeats == 0) {
+            System.err.println("Error: No available seats on this bus.");
+            return null;
+        }
+
+        int bookedSeats = inputInt("Enter number of seats to book (Max " + availableSeats + "): ", 
+                                   "Error: Seats must be between 1 and " + availableSeats, 1, availableSeats);
+
+        // Set booking details
+        Date odate = new Date(); // Booking date set to today
+        int paid = 0; // Default value, unpaid
+
+        // Update bus availability
+        bus.setBooked(bus.getBooked() + bookedSeats);
+
+        return new Booking(bcode, pcode, odate, paid, bookedSeats);
+    }
+
 }

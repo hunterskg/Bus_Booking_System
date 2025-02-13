@@ -12,6 +12,7 @@ import java.util.Date;
  * @author FPT SHOP
  */
 public class Booking {
+
     private String bcode;
     private String pcode;
     SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
@@ -33,7 +34,7 @@ public class Booking {
     public Booking(String bcode, String pcode, int paid, int seat) {
         this.bcode = bcode;
         this.pcode = pcode;
-        this.odate = new Date(); 
+        this.odate = new Date();
         this.paid = paid;
         this.seat = seat;
     }
@@ -85,12 +86,15 @@ public class Booking {
     public void setDateFormat(SimpleDateFormat dateFormat) {
         this.dateFormat = dateFormat;
     }
-    
 
     @Override
     public String toString() {
-        return "Booking{" + "bcode=" + bcode + ", pcode=" + pcode + ", odate=" + dateFormat.format(odate) + ", paid=" + paid + ", seat=" + seat + '}';
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        return bcode + ","
+                + pcode + ","
+                + dateFormat.format(odate) + ","
+                + paid + ","
+                + seat;
     }
-    
-    
+
 }

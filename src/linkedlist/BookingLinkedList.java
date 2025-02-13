@@ -4,9 +4,11 @@
  */
 package linkedlist;
 
+import java.io.*;
+import java.text.*;
+import java.util.Date;
 import object.Booking;
 import object.Bus;
-import object.Passenger;
 
 /**
  *
@@ -15,7 +17,7 @@ import object.Passenger;
 public class BookingLinkedList {
 
     Bus bus = new Bus();
-    Passenger passenger = new Passenger();
+    String filePath = "Booking.txt";
 
     private Node head;
     private Node tail;
@@ -32,7 +34,40 @@ public class BookingLinkedList {
         }
     }
 
-    //add booking to the end of the booking list
+    //3.1 Load data from file
+    public void loadBookingFromFile() throws ParseException {
+
+        File file = new File(filePath); // Create a File object for the path
+
+        if (!file.exists()) { // Check if the file exists
+            System.out.println("File not found: " + filePath);
+            return;
+        }
+
+        try {
+            BufferedReader bReader = new BufferedReader(
+                    new FileReader(filePath));
+            String readedFile;
+            while ((readedFile = bReader.readLine()) != null) {
+                String[] readedFileParts = readedFile.split(",");
+                if (readedFileParts.length == 5) {
+                    String bcode = readedFileParts[0].trim();
+                    String pcode = readedFileParts[1].trim();
+                    SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+                    Date odate = dateFormat.parse(readedFileParts[2].trim());
+                    int paid = Integer.parseInt(readedFileParts[3].trim());
+                    int seat = Integer.parseInt(readedFileParts[4].trim());
+                    addLast(new Booking(bcode, pcode, odate, paid, seat));
+                }
+            }
+        } catch (IOException e) {
+            System.out.println("Error reading file: " + e.getMessage());
+        } catch (NumberFormatException e) {
+            System.out.println("Invalid data format in file: " + e.getMessage());
+        }
+    }
+    //3.2 add booking to the end of the booking list
+
     public void addLast(Booking booking) {
         Node newNode = new Node(booking);
         if (head == null) {
@@ -43,7 +78,7 @@ public class BookingLinkedList {
         }
     }
 
-    //display
+    //3.3 display
     public void traverse() {
         Node q = head;
         while (q != null) {
@@ -75,7 +110,21 @@ public class BookingLinkedList {
         System.out.println("Booking success");
     }
 
-    // Sortby bcode + pcode
+    //3.3 Save booking list to file
+    public void saveBookingToFile() {
+        try (BufferedWriter bwriter = new BufferedWriter(new FileWriter(filePath))) {
+            Node temp = head;
+            while (temp != null) {
+                bwriter.write(temp.info.toString());  // Write the booking data
+                bwriter.newLine();  // Move to the next line
+                temp = temp.next;  // Move to the next node
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    //3.5 Sortby bcode + pcode
     public boolean shouldSwap(Node a, Node b) {
         return a.info.getBcode().compareToIgnoreCase(b.info.getBcode()) > 0 || (a.info.getBcode().equalsIgnoreCase(b.info.getBcode()) && a.info.getPcode().compareToIgnoreCase(b.info.getPcode()) > 0);
     }
@@ -87,29 +136,103 @@ public class BookingLinkedList {
     }
 
     public void sortByBcodeAndPcode() {
-        
-        for (Node i = head; i!=null;i=i.next){
-            for (Node j=i.next;j!=null;j=j.next){
-                if (shouldSwap(i, j)){
+
+        for (Node i = head; i != null; i = i.next) {
+            for (Node j = i.next; j != null; j = j.next) {
+                if (shouldSwap(i, j)) {
                     swap(i, j);
                 }
             }
         }
     }
-    
-    // Pay booking by bcode + pcode
-    public void payBooking(String bcode,String pcode){
+
+    //3.6 Pay booking by bcode + pcode
+    public void payBooking(String bcode, String pcode) {
         Node temp = head;
-        while (temp != null){
-            if (temp.info.getBcode().equalsIgnoreCase(bcode)|| temp.info.getPcode().equalsIgnoreCase(pcode)){
-                if (temp.info.getPaid() == 0){
+        while (temp != null) {
+            if (temp.info.getBcode().equalsIgnoreCase(bcode) || temp.info.getPcode().equalsIgnoreCase(pcode)) {
+                if (temp.info.getPaid() == 0) {
                     temp.info.setPaid(1);
                     System.out.println("Your seat have been paid");
-                }else{
+                } else {
                     System.out.println("Your seat have alreay paid");
                 }
             }
             temp = temp.next;
         }
     }
+
+    //1.12 Searchbookedby bcode (input bcode to be searched, then return  the busdata or not found; Then list all passengerswho bookedthe bus)
+    public void searchBookedByBcode(String bcode, BusLinkedList busList, PassengerLinkedList passengerList) {
+        // Search for the bus
+        linkedlist.Node bus = busList.searchByCode(bcode);
+
+        if (bus == null) {
+            System.err.println("Bus with code " + bcode + " not found.");
+            return;
+        }
+
+        // Display bus details
+        System.out.println("\n===== Bus Details =====");
+        System.out.println(bus);
+
+        // Search for passengers who booked this bus
+        System.out.println("\n===== Passengers Who Booked This Bus =====");
+        boolean foundPassenger = false;
+        Node temp = head; // Start from the head of the booking list
+
+        while (temp != null) {
+            if (temp.info.getBcode().equalsIgnoreCase(bcode)) {
+                // Find the passenger details
+                PassengerLinkedList.Node passengerNode = passengerList.searchByPcode(temp.info.getPcode());
+                if (passengerNode != null) {
+                    System.out.println(passengerNode.info);
+                    foundPassenger = true;
+                }
+            }
+            temp = temp.next;
+        }
+
+        if (!foundPassenger) {
+            System.out.println("No passengers have booked this bus.");
+        }
+    }
+
+    //2.8. Search busesbypcode
+    public void searchBusesByPcode(String pcode, PassengerLinkedList passengerList, BusLinkedList busList) {
+        // Search for the passenger
+        PassengerLinkedList.Node passengerNode = passengerList.searchByPcode(pcode);
+
+        if (passengerNode == null) {
+            System.err.println("Error: Passenger with code " + pcode + " not found.");
+            return;
+        }
+
+        // Display passenger details
+        System.out.println("\n===== Passenger Details =====");
+        System.out.println(passengerNode.info);
+
+        // Search for all buses booked by this passenger
+        System.out.println("\n===== Buses Booked by This Passenger =====");
+        boolean foundBooking = false;
+        Node temp = head; // Start from the head of the booking list
+
+        while (temp != null) {
+            if (temp.info.getPcode().equalsIgnoreCase(pcode)) {
+                // Find the bus details
+                linkedlist.Node bus = busList.searchByCode(temp.info.getBcode());
+                if (bus != null) {
+                    System.out.println(bus);
+                    foundBooking = true;
+                }
+            }
+            temp = temp.next;
+        }
+
+        if (!foundBooking) {
+            System.out.println("No buses have been booked by this passenger.");
+        }
+    }
+    
+
 }

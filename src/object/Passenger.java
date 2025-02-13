@@ -9,6 +9,7 @@ package object;
  * @author FPT SHOP
  */
 public class Passenger {
+
     private String pcode;
     private String name;
     private String phone;
@@ -45,6 +46,12 @@ public class Passenger {
     public void setPhone(String phone) {
         this.phone = phone;
     }
-    
-    
+
+    @Override
+    public String toString() {
+        return pcode + ","
+                + name + ","
+                + phone;
+    }
+
 }

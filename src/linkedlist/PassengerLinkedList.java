@@ -4,6 +4,7 @@
  */
 package linkedlist;
 
+import java.io.*;
 import object.Passenger;
 
 /**
@@ -11,11 +12,15 @@ import object.Passenger;
  * @author FPT SHOP
  */
 public class PassengerLinkedList {
+
     private Node head;
     private Node tail;
 
+    String filePath = "Passengers.txt";
+
     // Node class for the linked list
     public class Node {
+
         public Passenger info;
         public Node next;
 
@@ -24,7 +29,38 @@ public class PassengerLinkedList {
             this.next = null;
         }
     }
-    
+
+    //2.1 Load data from file
+    public void loadPassengersFromFile() {
+
+        File file = new File(filePath); // Create a File object for the path
+
+        if (!file.exists()) { // Check if the file exists
+            System.out.println("File not found: " + filePath);
+            return;
+        }
+
+        try {
+            BufferedReader bReader = new BufferedReader(
+                    new FileReader(filePath));
+            String readedFile;
+            while ((readedFile = bReader.readLine()) != null) {
+                String[] readedFileParts = readedFile.split(",");
+                if (readedFileParts.length == 3) {
+                    String pcode = readedFileParts[0].trim();
+                    String name = readedFileParts[1].trim();
+                    String phone = readedFileParts[2].trim();
+                    addLast(new Passenger(pcode, name, phone));
+                }
+            }
+        } catch (IOException e) {
+            System.out.println("Error reading file: " + e.getMessage());
+        } catch (NumberFormatException e) {
+            System.out.println("Invalid data format in file: " + e.getMessage());
+        }
+    }
+
+    //2.2 Input & add to the end    
     public void addLast(Passenger passenger) {
         Node newNode = new Node(passenger);
         if (head == null) {
@@ -34,6 +70,8 @@ public class PassengerLinkedList {
             tail = newNode;
         }
     }
+
+    //2.3 Display data
     public void traverse() {
         Node q = head;
         while (q != null) {
@@ -41,7 +79,22 @@ public class PassengerLinkedList {
             q = q.next;
         }
     }
-    
+
+    //2.4 Save passengers list to file
+    public void savePassengersToFile() {
+        try (BufferedWriter bwriter = new BufferedWriter(new FileWriter(filePath))) {
+            Node temp = head;
+            while (temp != null) {
+                bwriter.write(temp.info.toString());  // Write the booking data
+                bwriter.newLine();  // Move to the next line
+                temp = temp.next;  // Move to the next node
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    //2.5 Search by pcode
     public Node searchByPcode(String pcode) {
         Node p = head;
         while (p != null) {
@@ -52,6 +105,8 @@ public class PassengerLinkedList {
         }
         return null;
     }
+
+    //2.6 Delete by pcode
     public void deleteByPcode(String pcode) {
         Node p = searchByPcode(pcode);
         Node q = head;
@@ -64,7 +119,8 @@ public class PassengerLinkedList {
             q.next = p.next;
         }
     }
-    
+
+    //2.7 Search by name
     public void searchByName(String name) {
         Node temp = head;
         boolean found = false;
@@ -80,5 +136,14 @@ public class PassengerLinkedList {
         }
     }
     
-    
+    public boolean searchByPhone(String phone){
+        Node temp = head;
+        while (temp != null){
+            if (temp.info.getPhone().equals(phone)){
+                return true;
+            }
+            temp = temp.next;
+        }
+        return false;
+    }
 }

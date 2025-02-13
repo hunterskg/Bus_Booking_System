@@ -9,6 +9,7 @@ package object;
  * @author FPT SHOP
  */
 public class Bus {
+
     private String bcode;
     private String bnum;
     private String dstation;
@@ -98,9 +99,14 @@ public class Bus {
 
     @Override
     public String toString() {
-        return "Bus{" + "bcode=" + bcode + ", bnum=" + bnum + ", dstation=" + dstation + ", astation=" + astation + ", dtime=" + dtime + ", seat=" + seat + ", booked=" + booked + ", atime=" + atime + '}';
+        return bcode + ","
+                + bnum + ","
+                + dstation + ","
+                + astation + ","
+                + dtime + ","
+                + seat + ","
+                + booked + ","
+                + atime;
     }
 
-    
-    
 }
