@@ -39,11 +39,26 @@ public class BusLinkedList {
         head = tail = null;
     }
 
+    public int size() {
+        Node p = head;
+        int a = 0;
+        while (p != null) {
+            p = p.next;
+            a++;
+        }
+        return a;
+    }
+
     //1.1 Load Buslist from file
     public void loadBusesFromFile() {
-        try {
-            BufferedReader bReader = new BufferedReader(
-                    new FileReader(filePath));
+        File file = new File(filePath); // Create a File object for the path
+
+        if (!file.exists()) { // Check if the file exists
+            System.out.println("File not found: " + filePath);
+            return;
+        }
+
+        try (BufferedReader bReader = new BufferedReader(new FileReader(file))) {
             String readedFile;
             while ((readedFile = bReader.readLine()) != null) {
                 String[] readedFileParts = readedFile.split(",");
@@ -59,11 +74,11 @@ public class BusLinkedList {
                     addLast(new Bus(bcode, bnum, dstation, astation, dtime, seat, booked, atime));
                 }
             }
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (IOException e) {
+            System.out.println("Error reading file: " + e.getMessage());
+        } catch (NumberFormatException e) {
+            System.out.println("Invalid data format in file: " + e.getMessage());
         }
-        //Print list
-        traverse();
     }
 
     //1.2 Input and add to the end

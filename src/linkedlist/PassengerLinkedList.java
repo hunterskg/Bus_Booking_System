@@ -32,6 +32,14 @@ public class PassengerLinkedList {
 
     //2.1 Load data from file
     public void loadPassengersFromFile() {
+
+        File file = new File(filePath); // Create a File object for the path
+
+        if (!file.exists()) { // Check if the file exists
+            System.out.println("File not found: " + filePath);
+            return;
+        }
+
         try {
             BufferedReader bReader = new BufferedReader(
                     new FileReader(filePath));
@@ -45,11 +53,11 @@ public class PassengerLinkedList {
                     addLast(new Passenger(pcode, name, phone));
                 }
             }
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (IOException e) {
+            System.out.println("Error reading file: " + e.getMessage());
+        } catch (NumberFormatException e) {
+            System.out.println("Invalid data format in file: " + e.getMessage());
         }
-        //Print list
-        traverse();
     }
 
     //2.2 Input & add to the end    
@@ -85,7 +93,7 @@ public class PassengerLinkedList {
             e.printStackTrace();
         }
     }
-    
+
     //2.5 Search by pcode
     public Node searchByPcode(String pcode) {
         Node p = head;
@@ -112,7 +120,6 @@ public class PassengerLinkedList {
         }
     }
 
-    
     //2.7 Search by name
     public void searchByName(String name) {
         Node temp = head;

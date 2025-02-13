@@ -23,14 +23,18 @@ public class Manager {
     }
 
     // Input an integer
-    public int inputInt(String msg) {
+    public int inputInt(String msg, String err, int min, int max) {
         while (true) {
+            int number = 0;
             System.out.print(msg);
             String input = sc.nextLine();
             if (valid.checkInt(input)) {
-                return Integer.parseInt(input);
+                number = Integer.parseInt(input);
+                if (number >= min && number <= max) {
+                    return number;
+                }
             } else {
-                System.err.println("Error: Invalid format. Please enter an integer.");
+                System.err.println(err);
             }
         }
     }
@@ -65,8 +69,6 @@ public class Manager {
             }
         }
     }
-    
-    
 
     // Input a Bus object
     public Bus inputBus(BusLinkedList busList) {
@@ -78,17 +80,9 @@ public class Manager {
         double dtime = inputDouble("Enter departing time (0-24): ", "Error: Time must be between 0 and 24.", 24, 0);
         double atime = inputDouble("Enter arriving time: ", "Error: Arrival time must be >= departing time and <= 24.", 24, dtime);
 
-        int seat = inputInt("Enter total seats: ");
-        while (seat <= 0) {
-            System.err.println("Error: Total seats must be greater than 0.");
-            seat = inputInt("Enter total seats: ");
-        }
+        int seat = inputInt("Enter total seats: ", "Error: Total seats must be greater than 0 and smaller than 96", 0, 96);
 
-        int booked = inputInt("Enter booked seats: ");
-        while (booked < 0 || booked > seat) {
-            System.err.println("Error: Booked seats must be between 0 and the total number of seats.");
-            booked = inputInt("Enter booked seats: ");
-        }
+        int booked = inputInt("Enter booked seats: ", "Seat must be between 0 and 96", 0, seat);
 
         return new Bus(bcode, bnum, dstation, astation, dtime, seat, booked, atime);
     }

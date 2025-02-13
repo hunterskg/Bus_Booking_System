@@ -9,7 +9,6 @@ import java.text.*;
 import java.util.Date;
 import object.Booking;
 import object.Bus;
-import object.Passenger;
 
 /**
  *
@@ -18,9 +17,7 @@ import object.Passenger;
 public class BookingLinkedList {
 
     Bus bus = new Bus();
-    Passenger passenger = new Passenger();
     String filePath = "Booking.txt";
-    Booking booking = new Booking();
 
     private Node head;
     private Node tail;
@@ -38,7 +35,15 @@ public class BookingLinkedList {
     }
 
     //3.1 Load data from file
-    public void loadBookingFromFile() {
+    public void loadBookingFromFile() throws ParseException {
+
+        File file = new File(filePath); // Create a File object for the path
+
+        if (!file.exists()) { // Check if the file exists
+            System.out.println("File not found: " + filePath);
+            return;
+        }
+
         try {
             BufferedReader bReader = new BufferedReader(
                     new FileReader(filePath));
@@ -55,11 +60,11 @@ public class BookingLinkedList {
                     addLast(new Booking(bcode, pcode, odate, paid, seat));
                 }
             }
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (IOException e) {
+            System.out.println("Error reading file: " + e.getMessage());
+        } catch (NumberFormatException e) {
+            System.out.println("Invalid data format in file: " + e.getMessage());
         }
-        //Print list
-        traverse();
     }
     //3.2 add booking to the end of the booking list
 
