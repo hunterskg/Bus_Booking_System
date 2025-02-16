@@ -90,11 +90,8 @@ public class Booking {
     @Override
     public String toString() {
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-        return bcode + ","
-                + pcode + ","
-                + dateFormat.format(odate) + ","
-                + paid + ","
-                + seat;
+        return String.format("Bus code: %s; Passenger code: %s; Date: %s; Paid: %d; Seat: %d",
+                bcode, pcode, dateFormat.format(odate), paid, seat);
     }
-
+    
 }

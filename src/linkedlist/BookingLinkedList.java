@@ -22,6 +22,16 @@ public class BookingLinkedList {
     private Node head;
     private Node tail;
 
+    Node getHead() {
+        return head;
+    }
+
+    public void setHead(Node head) {
+        this.head = head;
+    }
+    
+    
+
     // Node class for the linked list
     public class Node {
 
@@ -33,6 +43,17 @@ public class BookingLinkedList {
             this.next = null;
         }
     }
+    
+    public boolean isAlreadyBooked(String bcode, String pcode) {
+    Node temp = head;
+    while (temp != null) {
+        if (temp.info.getBcode().equalsIgnoreCase(bcode) && temp.info.getPcode().equalsIgnoreCase(pcode)) {
+            return true;  // Booking already exists
+        }
+        temp = temp.next;
+    }
+    return false;
+}
 
     //3.1 Load data from file
     public void loadBookingFromFile() throws ParseException {
@@ -44,22 +65,23 @@ public class BookingLinkedList {
             return;
         }
 
-        try {
-            BufferedReader bReader = new BufferedReader(
-                    new FileReader(filePath));
+        try (BufferedReader bReader = new BufferedReader(new FileReader(file))) {
             String readedFile;
             while ((readedFile = bReader.readLine()) != null) {
-                String[] readedFileParts = readedFile.split(",");
-                if (readedFileParts.length == 5) {
-                    String bcode = readedFileParts[0].trim();
-                    String pcode = readedFileParts[1].trim();
+
+                String[] parts = readedFile.split(";");
+                if (parts.length == 5) {
+
+                    String bcode = parts[0].split(":")[1].trim();
+                    String pcode = parts[1].split(":")[1].trim();
                     SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-                    Date odate = dateFormat.parse(readedFileParts[2].trim());
-                    int paid = Integer.parseInt(readedFileParts[3].trim());
-                    int seat = Integer.parseInt(readedFileParts[4].trim());
+                    Date odate = dateFormat.parse(parts[2].split(":")[1].trim());
+                    int paid = Integer.parseInt(parts[3].split(":")[1].trim());
+                    int seat = Integer.parseInt(parts[4].split(":")[1].trim());
                     addLast(new Booking(bcode, pcode, odate, paid, seat));
                 }
             }
+
         } catch (IOException e) {
             System.out.println("Error reading file: " + e.getMessage());
         } catch (NumberFormatException e) {
@@ -149,7 +171,7 @@ public class BookingLinkedList {
     public void payBooking(String bcode, String pcode) {
         Node temp = head;
         while (temp != null) {
-            if (temp.info.getBcode().equalsIgnoreCase(bcode) || temp.info.getPcode().equalsIgnoreCase(pcode)) {
+            if (temp.info.getBcode().equalsIgnoreCase(bcode) && temp.info.getPcode().equalsIgnoreCase(pcode)) {
                 if (temp.info.getPaid() == 0) {
                     temp.info.setPaid(1);
                     System.out.println("Your seat have been paid");
@@ -219,9 +241,9 @@ public class BookingLinkedList {
         while (temp != null) {
             if (temp.info.getPcode().equalsIgnoreCase(pcode)) {
                 // Find the bus details
-                linkedlist.BusNode bus = busList.searchByCode(temp.info.getBcode());
-                if (bus != null) {
-                    System.out.println(bus);
+                linkedlist.BusNode busToSearch = busList.searchByCode(temp.info.getBcode());
+                if (busToSearch != null) {
+                    System.out.println(busToSearch);
                     foundBooking = true;
                 }
             }
@@ -232,6 +254,5 @@ public class BookingLinkedList {
             System.out.println("No buses have been booked by this passenger.");
         }
     }
-    
 
 }

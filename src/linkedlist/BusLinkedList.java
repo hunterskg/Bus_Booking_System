@@ -62,17 +62,20 @@ public class BusLinkedList {
             String readedFile;
             while ((readedFile = bReader.readLine()) != null) {
 
-                String[] parts = readedFile.split(", ");
+                // Split only at ", " but not inside numbers
+                String[] parts = readedFile.split(";");
 
                 if (parts.length == 8) {
                     String bcode = parts[0].split(": ")[1].trim();
                     String bnum = parts[1].split(": ")[1].trim();
                     String dstation = parts[2].split(": ")[1].trim();
                     String astation = parts[3].split(": ")[1].trim();
-                    double dtime = Double.parseDouble(parts[4].split(": ")[1].trim());
+
+                    // Replace commas in numbers with dots before parsing
+                    double dtime = Double.parseDouble(parts[4].split(": ")[1].trim().replace(",", "."));
                     int seat = Integer.parseInt(parts[5].split(": ")[1].trim());
                     int booked = Integer.parseInt(parts[6].split(": ")[1].trim());
-                    double atime = Double.parseDouble(parts[7].split(": ")[1].trim());
+                    double atime = Double.parseDouble(parts[7].split(": ")[1].trim().replace(",", "."));
 
                     addLast(new Bus(bcode, bnum, dstation, astation, dtime, seat, booked, atime));
                 }
@@ -131,17 +134,54 @@ public class BusLinkedList {
     }
 
     //1.6 Delete by bcode
-    public void deleteByCode(String code) {
-        BusNode p = searchByCode(code);
-        BusNode q = head;
-        if (p == head) {
-            head = head.next;
-        } else {
-            while (q.next != p) {
-                q = q.next;
-            }
-            q.next = p.next;
+    public void deleteByCode(String code, BookingLinkedList bookingList) {
+        if (head == null) {
+            System.out.println("The bus list is empty.");
+            return;
         }
+
+        //Step 1: Delete all bookings for this bus first
+        BookingLinkedList.Node bookingPrev = null;
+        BookingLinkedList.Node bookingCurrent = bookingList.getHead();
+
+        while (bookingCurrent != null) {
+            if (bookingCurrent.info.getBcode().equalsIgnoreCase(code)) {
+                if (bookingPrev == null) {
+                    bookingList.setHead(bookingCurrent.next); // Remove head
+                } else {
+                    bookingPrev.next = bookingCurrent.next; // Remove current node
+                }
+            } else {
+                bookingPrev = bookingCurrent; // Move prev pointer forward
+            }
+            bookingCurrent = bookingCurrent.next;
+        }
+
+        // Step 2: Delete the bus after related bookings are removed
+        BusNode prev = null;
+        BusNode current = head;
+
+        while (current != null && !current.info.getBcode().equalsIgnoreCase(code)) {
+            prev = current;
+            current = current.next;
+        }
+
+        if (current == null) {
+            System.out.println("Bus with code " + code + " not found.");
+            return;
+        }
+
+        if (prev == null) {
+            head = current.next; // Delete head
+        } else {
+            prev.next = current.next; // Delete middle or tail node
+        }
+
+        if (current == tail) {
+            tail = prev; // Update tail if last node was deleted
+        }
+
+        System.out.println("Bus with code " + code + " and its bookings have been deleted.");
     }
 
     //1.7 Sort by bcode
@@ -248,6 +288,39 @@ public class BusLinkedList {
         }
         if (!found) {
             System.out.println("Not found");
+        }
+    }
+
+    //1.12 Search bookings by bus code
+    public void searchBookedByBcode(String bcode, BookingLinkedList bookingList, BusLinkedList busList, PassengerLinkedList passengerList) {
+
+        BusNode busNode = busList.searchByCode(bcode);
+        if (busNode == null) {
+            System.err.println("Bus with code " + bcode + " not found.");
+            return;
+        }
+
+        // Hiển thị thông tin xe buýt
+        System.out.println("\n===== Bus Details =====");
+        System.out.println(busNode.info);
+
+        System.out.println("\n===== Passengers Who Booked This Bus =====");
+        boolean foundPassenger = false;
+        BookingLinkedList.Node bookingNode = bookingList.getHead();
+        while (bookingNode != null) {
+            if (bookingNode.info.getBcode().equalsIgnoreCase(bcode)) {
+
+                PassengerLinkedList.Node passengerNode = passengerList.searchByPcode(bookingNode.info.getPcode());
+                if (passengerNode != null) {
+                    System.out.println(passengerNode.info);
+                    foundPassenger = true;
+                }
+            }
+            bookingNode = bookingNode.next;
+        }
+
+        if (!foundPassenger) {
+            System.out.println("No passengers have booked this bus.");
         }
     }
 

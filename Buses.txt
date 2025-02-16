@@ -1,1 +1,0 @@
-Bus code: B1, Bus number: 1, dstation: fpt, astation: hanoi, dtime: 8,0, seat: 36, booked: 23, atime: 10,0

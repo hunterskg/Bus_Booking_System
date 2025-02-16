@@ -49,9 +49,8 @@ public class Passenger {
 
     @Override
     public String toString() {
-        return pcode + ","
-                + name + ","
-                + phone;
+        return String.format("Passenger code: %s; Passenger name: %s; Passgenger phone: %s",
+                pcode, name, phone);
     }
 
 }

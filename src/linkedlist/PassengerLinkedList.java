@@ -29,6 +29,17 @@ public class PassengerLinkedList {
             this.next = null;
         }
     }
+    
+    public Node searchByPcode(String pcode) {
+        Node p = head;
+        while (p != null) {
+            if (p.info.getPcode().equalsIgnoreCase(pcode)) {
+                return p;
+            }
+            p = p.next;
+        }
+        return null;
+    }
 
     //2.1 Load data from file
     public void loadPassengersFromFile() {
@@ -40,16 +51,16 @@ public class PassengerLinkedList {
             return;
         }
 
-        try {
-            BufferedReader bReader = new BufferedReader(
-                    new FileReader(filePath));
+        try (BufferedReader bReader = new BufferedReader(new FileReader(file))) {
             String readedFile;
             while ((readedFile = bReader.readLine()) != null) {
-                String[] readedFileParts = readedFile.split(",");
+
+                String[] readedFileParts = readedFile.split(";");
+
                 if (readedFileParts.length == 3) {
-                    String pcode = readedFileParts[0].trim();
-                    String name = readedFileParts[1].trim();
-                    String phone = readedFileParts[2].trim();
+                    String pcode = readedFileParts[0].split(":")[1].trim();
+                    String name = readedFileParts[1].split(":")[1].trim();
+                    String phone = readedFileParts[2].split(":")[1].trim();
                     addLast(new Passenger(pcode, name, phone));
                 }
             }
@@ -94,29 +105,65 @@ public class PassengerLinkedList {
     }
 
     //2.5 Search by pcode
-    public Node searchByPcode(String pcode) {
-        Node p = head;
-        while (p != null) {
-            if (p.info.getPcode().equals(pcode)) {
-                return p;
-            }
-            p = p.next;
+    public void searchByPcodeResult(String pcode) {
+        Node p = searchByPcode(pcode);
+        if(searchByPcode(pcode)!=null){
+            System.out.println(p.info);
+        } else {
+            System.out.println("Passenger not found");
         }
-        return null;
     }
 
     //2.6 Delete by pcode
-    public void deleteByPcode(String pcode) {
-        Node p = searchByPcode(pcode);
-        Node q = head;
-        if (p == head) {
-            head = head.next;
-        } else {
-            while (q.next != p) {
-                q = q.next;
-            }
-            q.next = p.next;
+    public void deleteByPcode(String pcode, BookingLinkedList bookingList) {
+
+        if (head == null) {
+            System.out.println("Passenger list is empty.");
+            return;
         }
+
+        // Step 1: Delete all bookings for this passenger first
+        BookingLinkedList.Node bookingPrev = null;
+        BookingLinkedList.Node bookingCurrent = bookingList.getHead();
+
+        while (bookingCurrent != null) {
+            if (bookingCurrent.info.getPcode().equalsIgnoreCase(pcode)) {
+                if (bookingPrev == null) {
+                    bookingList.setHead(bookingCurrent.next); // Remove head
+                } else {
+                    bookingPrev.next = bookingCurrent.next; // Remove current node
+                }
+            } else {
+                bookingPrev = bookingCurrent; // Move prev pointer forward
+            }
+            bookingCurrent = bookingCurrent.next;
+        }
+
+        // Step 2: Delete the passenger after related bookings are removed
+        Node prev = null;
+        Node current = head;
+
+        while (current != null && !current.info.getPcode().equalsIgnoreCase(pcode)) {
+            prev = current;
+            current = current.next;
+        }
+
+        if (current == null) {
+            System.out.println("Passenger with code " + pcode + " not found.");
+            return;
+        }
+
+        if (prev == null) {
+            head = current.next; // Delete head
+        } else {
+            prev.next = current.next; // Delete middle or tail node
+        }
+
+        if (current == tail) {
+            tail = prev; // Update tail if last node was deleted
+        }
+
+        System.out.println("Passenger with code " + pcode + " and their bookings have been deleted.");
     }
 
     //2.7 Search by name
@@ -134,11 +181,41 @@ public class PassengerLinkedList {
             System.out.println("Not found");
         }
     }
-    
-    public boolean searchByPhone(String phone){
+
+    //2.8 Search buses by pcode
+    public void searchBusesByPcode(String pcode, BookingLinkedList bookingList, BusLinkedList busList) {
+        Node passengerNode = searchByPcode(pcode);
+        if (passengerNode == null) {
+            System.err.println("Passenger with code " + pcode + " not found.");
+            return;
+        }
+        System.out.println("\n===== Passenger Details =====");
+        System.out.println(passengerNode.info);
+
+        System.out.println("\n===== Buses Booked by This Passenger =====");
+        boolean foundBooking = false;
+        BookingLinkedList.Node bookingNode = bookingList.getHead();
+        while (bookingNode != null) {
+            if (bookingNode.info.getPcode().equalsIgnoreCase(pcode)) {
+
+                linkedlist.BusNode busNode = busList.searchByCode(bookingNode.info.getBcode());
+                if (busNode != null) {
+                    System.out.println(busNode.info);
+                    foundBooking = true;
+                }
+            }
+            bookingNode = bookingNode.next;
+        }
+
+        if (!foundBooking) {
+            System.out.println("No buses have been booked by this passenger.");
+        }
+    }
+
+    public boolean searchByPhone(String phone) {
         Node temp = head;
-        while (temp != null){
-            if (temp.info.getPhone().equals(phone)){
+        while (temp != null) {
+            if (temp.info.getPhone().equals(phone)) {
                 return true;
             }
             temp = temp.next;

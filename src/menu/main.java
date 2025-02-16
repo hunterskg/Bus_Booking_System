@@ -18,11 +18,11 @@ public class main {
         //input and display handler
         Manager manage = new Manager();
         UI ui = new UI();
-
-        //Load file
+        
+        //load file
+        bookingList.loadBookingFromFile();
         busList.loadBusesFromFile();
         passList.loadPassengersFromFile();
-        bookingList.loadBookingFromFile();
 
         while (true) {
             int menuChoice;
@@ -44,13 +44,14 @@ public class main {
                                 busList.traverse();
                                 break;
                             case 3:
-                                String bcodeSearch = manage.inputBcode("Please enter bcode to search: ", busList);
-                                busList.searchByCode(bcodeSearch);
+                                String bcodeSearch = manage.inputString("Please enter bcode to search: ");
+                                System.out.println(busList.searchByCode(bcodeSearch).info); 
                                 break;
                             case 4:
                                 String bcodeDelete = manage.inputString("Please enter bcode to delete: ");
-                                busList.deleteByCode(bcodeDelete);
+                                busList.deleteByCode(bcodeDelete, bookingList);
                                 busList.saveBusesToFile();
+                                bookingList.saveBookingToFile();
                                 break;
                             case 5:
                                 busList.sortByCode();
@@ -77,10 +78,11 @@ public class main {
                                 busList.searchByName(bNameToSearch);
                                 break;
                             case 10:
-                                // Chưa viết method
+                                String bcodeToSearch = manage.inputString("Please enter bus code to search bookings: ");
+                                busList.searchBookedByBcode(bcodeToSearch, bookingList, busList, passList);
                                 break;
                         }
-                    } while (busChoice != 0); // Return to main menu when user selects 0
+                    } while (busChoice != 11); // Return to main menu when user selects 0
                     break; // Exit case 1 and go back to main menu
 
                 case 2:
@@ -90,7 +92,9 @@ public class main {
                         passengersChoice = ui.getChoicePassengersMenu();
                         switch (passengersChoice) {
                             case 1:
-                                // Chưa có input passenger
+                                Passenger inputPassenger = manage.inputPassenger(passList);
+                                passList.addLast(inputPassenger);
+                                passList.savePassengersToFile();
                                 break;
                             case 2:
                                 passList.traverse();
@@ -98,21 +102,24 @@ public class main {
                                 break;
                             case 3:
                                 String pcodeToSearch = manage.inputString("Please enter passenger code to search: ");
-                                passList.searchByPcode(pcodeToSearch);
+                                passList.searchByPcodeResult(pcodeToSearch);
                                 break;
                             case 4:
                                 String pcodeToDelete = manage.inputString("Please enter passenger code to delete: ");
-                                passList.deleteByPcode(pcodeToDelete);
+                                passList.deleteByPcode(pcodeToDelete, bookingList);
+                                passList.savePassengersToFile();
+                                bookingList.saveBookingToFile();
                                 break;
                             case 5:
                                 String pnameToSearch = manage.inputString("Please enter passenger name to search: ");
                                 passList.searchByName(pnameToSearch);
                                 break;
                             case 6:
-                                // Chưa có method
+                                String pcodeForBusSearch = manage.inputString("Please enter passenger code to search buses: ");
+                                passList.searchBusesByPcode(pcodeForBusSearch, bookingList, busList);
                                 break;
                         }
-                    } while (passengersChoice != 0);
+                    } while (passengersChoice != 7);
                     break;
 
                 case 3:
@@ -122,7 +129,9 @@ public class main {
                         bookingChoice = ui.getChoiceBookingMenu();
                         switch (bookingChoice) {
                             case 1:
-                                // Chưa có method
+                                Booking inputBooking = manage.inputBooking(bookingList, busList, passList);
+                                bookingList.addLast(inputBooking);
+                                bookingList.saveBookingToFile();
                                 break;
                             case 2:
                                 bookingList.traverse();
@@ -138,7 +147,7 @@ public class main {
                                 bookingList.saveBookingToFile();
                                 break;
                         }
-                    } while (bookingChoice != 0);
+                    } while (bookingChoice != 5);
                     break;
 
                 case 4:
