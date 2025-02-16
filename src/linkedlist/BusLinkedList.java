@@ -57,7 +57,7 @@ public class BusLinkedList {
             System.out.println("File not found: " + filePath);
             return;
         }
-        
+
         try (BufferedReader bReader = new BufferedReader(new FileReader(file))) {
             String readedFile;
             while ((readedFile = bReader.readLine()) != null) {

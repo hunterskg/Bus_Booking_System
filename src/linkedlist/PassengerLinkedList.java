@@ -134,5 +134,15 @@ public class PassengerLinkedList {
             System.out.println("Not found");
         }
     }
-
+    
+    public boolean searchByPhone(String phone){
+        Node temp = head;
+        while (temp != null){
+            if (temp.info.getPhone().equals(phone)){
+                return true;
+            }
+            temp = temp.next;
+        }
+        return false;
+    }
 }
