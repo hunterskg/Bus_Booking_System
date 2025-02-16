@@ -136,6 +136,36 @@ public class PassengerLinkedList {
         }
     }
     
+    //2.8 Search buses by pcode
+    public void searchBusesByPcode(String pcode, BookingLinkedList bookingList, BusLinkedList busList) {
+    Node passengerNode = searchByPcode(pcode);
+    if (passengerNode == null) {
+        System.err.println("Passenger with code " + pcode + " not found.");
+        return;
+    }
+    System.out.println("\n===== Passenger Details =====");
+    System.out.println(passengerNode.info);
+
+    System.out.println("\n===== Buses Booked by This Passenger =====");
+    boolean foundBooking = false;
+    BookingLinkedList.Node bookingNode = bookingList.getHead();
+    while (bookingNode != null) {
+        if (bookingNode.info.getPcode().equalsIgnoreCase(pcode)) {
+
+            linkedlist.Node busNode = busList.searchByCode(bookingNode.info.getBcode());
+            if (busNode != null) {
+                System.out.println(busNode.info);
+                foundBooking = true;
+            }
+        }
+        bookingNode = bookingNode.next;
+    }
+
+    if (!foundBooking) {
+        System.out.println("No buses have been booked by this passenger.");
+    }
+}
+    
     public boolean searchByPhone(String phone){
         Node temp = head;
         while (temp != null){

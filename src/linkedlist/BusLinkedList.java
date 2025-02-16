@@ -248,5 +248,37 @@ public class BusLinkedList {
             System.out.println("Not found");
         }
     }
+    //1.12 Search bookings by bus code
+    public void searchBookedByBcode(String bcode, BookingLinkedList bookingList, BusLinkedList busList, PassengerLinkedList passengerList) {
+
+        Node busNode = busList.searchByCode(bcode);
+        if (busNode == null) {
+            System.err.println("Bus with code " + bcode + " not found.");
+            return;
+        }
+
+        // Hiển thị thông tin xe buýt
+        System.out.println("\n===== Bus Details =====");
+        System.out.println(busNode.info);
+
+        System.out.println("\n===== Passengers Who Booked This Bus =====");
+        boolean foundPassenger = false;
+        BookingLinkedList.Node bookingNode = bookingList.getHead();
+        while (bookingNode != null) {
+            if (bookingNode.info.getBcode().equalsIgnoreCase(bcode)) {
+
+                PassengerLinkedList.Node passengerNode = passengerList.searchByPcode(bookingNode.info.getPcode());
+                if (passengerNode != null) {
+                    System.out.println(passengerNode.info);
+                    foundPassenger = true;
+                }
+            }
+            bookingNode = bookingNode.next;
+        }
+
+        if (!foundPassenger) {
+            System.out.println("No passengers have booked this bus.");
+        }
+    }
 
 }

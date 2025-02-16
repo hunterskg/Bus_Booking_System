@@ -78,7 +78,8 @@ public class main {
                             busList.searchByName(bNameToSearch);
                             break;
                         case 10:
-                            //Chua viet method
+                            String bcodeToSearch = manage.inputString("Please enter bus code to search bookings: ");
+                            busList.searchBookedByBcode(bcodeToSearch, bookingList, busList, passList);
                             break;
                     }
                     break;
@@ -110,7 +111,8 @@ public class main {
                             passList.searchByName(pnameToSearch);
                             break;
                         case 6:
-                            //Chua co method
+                            String pcodeForBusSearch = manage.inputString("Please enter passenger code to search buses: ");
+                            passList.searchBusesByPcode(pcodeForBusSearch, bookingList, busList);
                             break;
                     }
                     break;

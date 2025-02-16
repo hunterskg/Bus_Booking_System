@@ -22,6 +22,10 @@ public class BookingLinkedList {
     private Node head;
     private Node tail;
 
+    Node getHead() {
+        return head;
+    }
+
     // Node class for the linked list
     public class Node {
 
