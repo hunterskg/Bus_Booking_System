@@ -25,7 +25,7 @@ public class Manager {
     // Input an integer
     public int inputInt(String msg, String err, int min, int max) {
         while (true) {
-            int number = 0;
+            int number;
             System.out.print(msg);
             String input = sc.nextLine();
             if (valid.checkInt(input)) {

@@ -13,16 +13,16 @@ import object.Bus;
  */
 public class BusLinkedList {
 
-    private Node head;
-    private Node tail;
+    private BusNode head;
+    private BusNode tail;
 
     String filePath = "Buses.txt";
 
-    public Node getHead() {
+    public BusNode getHead() {
         return head;
     }
 
-    public Node getTail() {
+    public BusNode getTail() {
         return tail;
     }
 
@@ -40,7 +40,7 @@ public class BusLinkedList {
     }
 
     public int size() {
-        Node p = head;
+        BusNode p = head;
         int a = 0;
         while (p != null) {
             p = p.next;
@@ -57,20 +57,23 @@ public class BusLinkedList {
             System.out.println("File not found: " + filePath);
             return;
         }
-
+        
         try (BufferedReader bReader = new BufferedReader(new FileReader(file))) {
             String readedFile;
             while ((readedFile = bReader.readLine()) != null) {
-                String[] readedFileParts = readedFile.split(",");
-                if (readedFileParts.length == 8) {
-                    String bcode = readedFileParts[0].trim();
-                    String bnum = readedFileParts[1].trim();
-                    String dstation = readedFileParts[2].trim();
-                    String astation = readedFileParts[3].trim();
-                    double dtime = Double.parseDouble(readedFileParts[4].trim());
-                    int seat = Integer.parseInt(readedFileParts[5].trim());
-                    int booked = Integer.parseInt(readedFileParts[6].trim());
-                    double atime = Double.parseDouble(readedFileParts[7].trim());
+
+                String[] parts = readedFile.split(", ");
+
+                if (parts.length == 8) {
+                    String bcode = parts[0].split(": ")[1].trim();
+                    String bnum = parts[1].split(": ")[1].trim();
+                    String dstation = parts[2].split(": ")[1].trim();
+                    String astation = parts[3].split(": ")[1].trim();
+                    double dtime = Double.parseDouble(parts[4].split(": ")[1].trim());
+                    int seat = Integer.parseInt(parts[5].split(": ")[1].trim());
+                    int booked = Integer.parseInt(parts[6].split(": ")[1].trim());
+                    double atime = Double.parseDouble(parts[7].split(": ")[1].trim());
+
                     addLast(new Bus(bcode, bnum, dstation, astation, dtime, seat, booked, atime));
                 }
             }
@@ -84,9 +87,9 @@ public class BusLinkedList {
     //1.2 Input and add to the end
     public void addLast(Bus bus) {
         if (isEmpty()) {
-            head = tail = new Node(bus); // Both head and tail point to the new node
+            head = tail = new BusNode(bus); // Both head and tail point to the new node
         } else {
-            Node newNode = new Node(bus); // `next` defaults to null
+            BusNode newNode = new BusNode(bus); // `next` defaults to null
             tail.next = newNode;         // Point the current tail to the new node
             tail = newNode;              // Update the tail reference
         }
@@ -94,30 +97,30 @@ public class BusLinkedList {
 
     //1.3 Display data
     public void traverse() {
-        Node q = head;
+        BusNode q = head;
         while (q != null) {
             System.out.println(q.info);
             q = q.next;
         }
+        System.out.println();
     }
 
     //1.4 Save bus list to file
     public void saveBusesToFile() {
         try (BufferedWriter bwriter = new BufferedWriter(new FileWriter(filePath))) {
-            Node temp = head;
+            BusNode temp = head;
             while (temp != null) {
                 bwriter.write(temp.info.toString());  // Write the booking data
                 bwriter.newLine();  // Move to the next line
                 temp = temp.next;  // Move to the next node
             }
         } catch (Exception e) {
-            e.printStackTrace();
         }
     }
 
     //1.5 Search by bcode
-    public Node searchByCode(String code) {
-        Node p = head;
+    public BusNode searchByCode(String code) {
+        BusNode p = head;
         while (p != null) {
             if (p.info.getBcode().equals(code)) {
                 return p;
@@ -129,8 +132,8 @@ public class BusLinkedList {
 
     //1.6 Delete by bcode
     public void deleteByCode(String code) {
-        Node p = searchByCode(code);
-        Node q = head;
+        BusNode p = searchByCode(code);
+        BusNode q = head;
         if (p == head) {
             head = head.next;
         } else {
@@ -143,8 +146,8 @@ public class BusLinkedList {
 
     //1.7 Sort by bcode
     public void sortByCode() {
-        for (Node a = head; a != null; a = a.next) {
-            for (Node b = a.next; b != null; b = b.next) {
+        for (BusNode a = head; a != null; a = a.next) {
+            for (BusNode b = a.next; b != null; b = b.next) {
                 if (a.info.getBcode().compareTo(b.info.getBcode()) > 0) {
                     swap(a, b);
                 }
@@ -152,7 +155,7 @@ public class BusLinkedList {
         }
     }
 
-    void swap(Node a, Node b) {
+    void swap(BusNode a, BusNode b) {
         Bus temp = a.info;
         a.info = b.info;
         b.info = temp;
@@ -160,14 +163,14 @@ public class BusLinkedList {
 
     //1.8 Input & add to beginning
     public void addFirst(Bus bus) {
-        Node newNode = new Node(bus);
+        BusNode newNode = new BusNode(bus);
         newNode.next = head;
         head = newNode;
     }
 
     //1.9 add after position k
     public void addAfterPositionK(Bus bus, int k) {
-        Node newNode = new Node(bus);
+        BusNode newNode = new BusNode(bus);
         if (k < 0) {
             System.err.println("Position must be >= 0");
             return;
@@ -181,7 +184,7 @@ public class BusLinkedList {
             }
             return;
         }
-        Node temp = head;
+        BusNode temp = head;
         int index = 0;
         while (temp != null && index < k) {
             temp = temp.next;
@@ -215,7 +218,7 @@ public class BusLinkedList {
             }
             return;
         }
-        Node temp = head;
+        BusNode temp = head;
         int index = 0;
         while (temp != null && index < k - 1) {
             temp = temp.next;
@@ -225,7 +228,7 @@ public class BusLinkedList {
             System.out.println("Out of list");
             return;
         }
-        Node p = temp.next;
+        BusNode p = temp.next;
         temp.next = p.next;
         if (p == tail) {
             tail = temp;
@@ -234,7 +237,7 @@ public class BusLinkedList {
 
     //1.11 Search by name
     public void searchByName(String name) {
-        Node temp = head;
+        BusNode temp = head;
         boolean found = false;
         while (temp != null) {
             if (temp.info.getBnum().equalsIgnoreCase(name)) {

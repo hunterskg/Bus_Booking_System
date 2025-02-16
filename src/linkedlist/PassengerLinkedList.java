@@ -90,7 +90,6 @@ public class PassengerLinkedList {
                 temp = temp.next;  // Move to the next node
             }
         } catch (Exception e) {
-            e.printStackTrace();
         }
     }
 

@@ -10,20 +10,20 @@ import object.Bus;
  *
  * @author FPT SHOP
  */
-public class Node {
+public class BusNode {
 
     public Bus info;
-    public Node next;
+    public BusNode next;
 
-    public Node() {
+    public BusNode() {
     }
 
-     public Node(Bus bus) {
+     public BusNode(Bus bus) {
         this.info = bus;
         this.next = null; 
     }
 
-    public Node(Bus bus, Node next) {
+    public BusNode(Bus bus, BusNode next) {
         this.info = bus;
         this.next = next;
     }

@@ -89,7 +89,7 @@ public class BookingLinkedList {
 
     public void bookBus(String bcode, String pcode, int seats, BusLinkedList busList, PassengerLinkedList passengerList) {
         // check if bus and passenger exists
-        linkedlist.Node foundBus = busList.searchByCode(bcode);
+        linkedlist.BusNode foundBus = busList.searchByCode(bcode);
         if (foundBus == null) {
             System.err.println("Bus does not exist");
         }
@@ -120,7 +120,6 @@ public class BookingLinkedList {
                 temp = temp.next;  // Move to the next node
             }
         } catch (Exception e) {
-            e.printStackTrace();
         }
     }
 

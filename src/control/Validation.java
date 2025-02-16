@@ -5,16 +5,13 @@
 package control;
 
 import linkedlist.BusLinkedList;
-import linkedlist.Node;
-import object.Bus;
+import linkedlist.BusNode;
 
 /**
  *
  * @author FPT SHOP
  */
 public class Validation {
-
-   
 
     public boolean checkString(String input) {
         return !input.isEmpty();
@@ -23,23 +20,23 @@ public class Validation {
     public boolean checkDouble(String input) {
 
         try {
-            Double.parseDouble(input);
+            Double.valueOf(input);
             return true;
-        } catch (Exception e) {
+        } catch (NumberFormatException e) {
             return false;
         }
 
     }
 
     public boolean checkInt(String input) {
-
         try {
-            Integer.parseInt(input);
-            return true;
-        } catch (Exception e) {
+            if (Integer.parseInt(input) > 0) {
+                return true;
+            }
+        } catch (NumberFormatException e) {
             return false;
         }
-
+        return false;
     }
 
     public boolean checkBcode(String input, BusLinkedList busList) {
@@ -47,7 +44,7 @@ public class Validation {
             System.out.println("Code can not be empty");
             return false;
         }
-        Node temp = busList.getHead();
+        BusNode temp = busList.getHead();
         while (temp != null) {
             if (temp.info.getBcode().equals(input)) {
                 return false;

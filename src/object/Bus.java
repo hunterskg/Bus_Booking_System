@@ -99,14 +99,8 @@ public class Bus {
 
     @Override
     public String toString() {
-        return bcode + ","
-                + bnum + ","
-                + dstation + ","
-                + astation + ","
-                + dtime + ","
-                + seat + ","
-                + booked + ","
-                + atime;
+        return String.format("Bus code: %s, Bus number: %s, dstation: %s, astation: %s, dtime: %.1f, seat: %d, booked: %d, atime: %.1f",
+                bcode, bnum, dstation, astation, dtime, seat, booked, atime);
     }
 
 }

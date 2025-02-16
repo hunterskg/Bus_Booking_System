@@ -4,9 +4,6 @@
  */
 package control;
 
-import java.util.Scanner;
-import linkedlist.*;
-
 /**
  *
  * @author admin
@@ -26,11 +23,11 @@ public class UI {
     public int getChoiceMenu() {
         return manage.inputInt("Enter your choice: ", "Please input number betwwen 1 and 4", 1, 4);
     }
-    
+
     public int getChoiceBusMenu() {
         return manage.inputInt("Enter your choice: ", "Please input number betwwen 0 and 10", 0, 10);
     }
-    
+
     public int getChoicePassengersMenu() {
         return manage.inputInt("Enter your choice: ", "Please input number betwwen 0 and 6", 0, 6);
     }
@@ -38,8 +35,8 @@ public class UI {
     public int getChoiceBookingMenu() {
         return manage.inputInt("Enter your choice: ", "Please input number betwwen 0 and 4", 0, 4);
     }
-    
-   public void showBusMenu() {
+
+    public void showBusMenu() {
         System.out.println("Bus Management");
         System.out.println("1. Add new bus");
         System.out.println("2. Display all buses");
@@ -72,7 +69,6 @@ public class UI {
         System.out.println("3. Sort bookings by bus code and passenger code");
         System.out.println("4. Pay for booking");
         System.out.println("0. Back to main menu");
-        System.out.print("Enter your choice: ");
     }
 
 }
