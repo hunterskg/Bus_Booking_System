@@ -1,0 +1,1 @@
+Bus code: B1; Bus number: 2; dstation: FPT; astation: awd; dtime: 24,0; seat: 12; booked: 2; atime: 24,0

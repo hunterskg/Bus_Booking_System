@@ -29,7 +29,7 @@ public class PassengerLinkedList {
             this.next = null;
         }
     }
-    
+
     public Node searchByPcode(String pcode) {
         Node p = head;
         while (p != null) {
@@ -39,6 +39,10 @@ public class PassengerLinkedList {
             p = p.next;
         }
         return null;
+    }
+
+    public boolean isEmpty() {
+        return head == null;
     }
 
     //2.1 Load data from file
@@ -107,7 +111,7 @@ public class PassengerLinkedList {
     //2.5 Search by pcode
     public void searchByPcodeResult(String pcode) {
         Node p = searchByPcode(pcode);
-        if(searchByPcode(pcode)!=null){
+        if (searchByPcode(pcode) != null) {
             System.out.println(p.info);
         } else {
             System.out.println("Passenger not found");

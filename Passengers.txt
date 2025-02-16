@@ -1,0 +1,3 @@
+Passenger code: P1; Passenger name: Do Hoang Phuc; Passgenger phone: 0123456789
+Passenger code: P2; Passenger name: Ronguma; Passgenger phone: 0987654321
+Passenger code: P3; Passenger name: Ha Khanh Duy; Passgenger phone: 0135724689

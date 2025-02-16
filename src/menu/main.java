@@ -45,7 +45,7 @@ public class main {
                                 break;
                             case 3:
                                 String bcodeSearch = manage.inputString("Please enter bcode to search: ");
-                                System.out.println(busList.searchByCode(bcodeSearch).info); 
+                                busList.searchByBcodeResult(bcodeSearch);
                                 break;
                             case 4:
                                 String bcodeDelete = manage.inputString("Please enter bcode to delete: ");
@@ -56,6 +56,7 @@ public class main {
                             case 5:
                                 busList.sortByCode();
                                 busList.saveBusesToFile();
+                                busList.traverse();
                                 break;
                             case 6:
                                 Bus bus = manage.inputBus(busList);
@@ -64,12 +65,12 @@ public class main {
                                 break;
                             case 7:
                                 Bus busAfterPosition = manage.inputBus(busList);
-                                int bPosition = manage.inputInt("Please enter position to add Bus: ", "Position not available", 0, busList.size());
+                                int bPosition = manage.inputIntPosition("Please enter position to add Bus: ", "Position not available", 0, busList.size());
                                 busList.addAfterPositionK(busAfterPosition, bPosition);
                                 busList.saveBusesToFile();
                                 break;
                             case 8:
-                                int bDeletePosition = manage.inputInt("Please enter position to delete Bus: ", "Position not available", 0, busList.size());
+                                int bDeletePosition = manage.inputIntPosition("Please enter position to delete Bus: ", "Position not available", 0, busList.size());
                                 busList.deletePositionK(bDeletePosition);
                                 busList.saveBusesToFile();
                                 break;

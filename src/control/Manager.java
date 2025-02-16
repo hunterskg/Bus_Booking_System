@@ -39,6 +39,22 @@ public class Manager {
             }
         }
     }
+    
+    public int inputIntPosition(String msg, String err, int min, int max) {
+        while (true) {
+            int number;
+            System.out.print(msg);
+            String input = sc.nextLine();
+            if (valid.checkIntPosition(input)) {
+                number = Integer.parseInt(input);
+                if (number >= min && number <= max) {
+                    return number;
+                }
+            } else {
+                System.err.println(err);
+            }
+        }
+    }
 
     // Input a double with range validation
     public double inputDouble(String msg, String err, double max, double min) {
@@ -124,6 +140,12 @@ public class Manager {
             // Get valid bus code
             String bcode = inputString("-> Enter bus code: ");
             BusNode busToSearch = busList.searchByCode(bcode);
+            //Check if list is empty
+            if (busList.isEmpty()) {
+                System.out.println("There aren't any bus yet");
+                break;
+            }
+            
             while (busToSearch == null) {
                 System.err.println("Error: Bus with code " + bcode + " not found.");
                 bcode = inputString("-> Enter a valid bus code: ");
@@ -133,6 +155,12 @@ public class Manager {
             // Get valid passenger code
             String pcode = inputString("-> Enter passenger code: ");
             PassengerLinkedList.Node passenger = passengerList.searchByPcode(pcode);
+            //Check if list is empty
+            if (passengerList.isEmpty()) {
+                System.out.println("There aren't any passenger yet");
+                break;
+            }
+            
             while (passenger == null) {
                 System.err.println("Error: Passenger with code " + pcode + " not found.");
                 pcode = inputString("-> Enter a valid passenger code: ");

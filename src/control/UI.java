@@ -54,7 +54,7 @@ public class UI {
         System.out.println("|| 8. Delete bus at position     ||");
         System.out.println("|| 9. Search bus by name         ||");
         System.out.println("|| 10. Search booked by bus code ||");
-        System.out.println("|| 11. Back to main menu          ||");
+        System.out.println("|| 11. Back to main menu         ||");
         System.out.println("||===============================||\n");
     }
 

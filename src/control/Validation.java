@@ -27,6 +27,17 @@ public class Validation {
         }
 
     }
+    
+    public boolean checkIntPosition(String input) {
+        try {
+            if (Integer.parseInt(input) >= 0) {
+                return true;
+            }
+        } catch (NumberFormatException e) {
+            return false;
+        }
+        return false;
+    }
 
     public boolean checkInt(String input) {
         try {

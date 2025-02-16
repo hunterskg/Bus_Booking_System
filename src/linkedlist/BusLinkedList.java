@@ -132,6 +132,15 @@ public class BusLinkedList {
         }
         return null;
     }
+    
+    public void searchByBcodeResult(String pcode) {
+        BusNode p = searchByCode(pcode);
+        if (searchByCode(pcode) != null) {
+            System.out.println(p.info);
+        } else {
+            System.out.println("Bus not found");
+        }
+    }
 
     //1.6 Delete by bcode
     public void deleteByCode(String code, BookingLinkedList bookingList) {
@@ -193,6 +202,7 @@ public class BusLinkedList {
                 }
             }
         }
+        System.out.println("Sort successfully");
     }
 
     void swap(BusNode a, BusNode b) {
