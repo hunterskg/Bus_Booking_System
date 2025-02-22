@@ -126,22 +126,11 @@ public class PassengerLinkedList {
             return;
         }
 
-        // Step 1: Delete all bookings for this passenger first
-        BookingLinkedList.Node bookingPrev = null;
-        BookingLinkedList.Node bookingCurrent = bookingList.getHead();
-
-        while (bookingCurrent != null) {
-            if (bookingCurrent.info.getPcode().equalsIgnoreCase(pcode)) {
-                if (bookingPrev == null) {
-                    bookingList.setHead(bookingCurrent.next); // Remove head
-                } else {
-                    bookingPrev.next = bookingCurrent.next; // Remove current node
-                }
-            } else {
-                bookingPrev = bookingCurrent; // Move prev pointer forward
-            }
-            bookingCurrent = bookingCurrent.next;
-        }
+        // Check if passenger have booked
+        if (bookingList.isPassengerBooked(pcode)) {
+        System.err.println("Error: Cannot delete passenger " + pcode + " because they have booked.");
+        return;
+    }
 
         // Step 2: Delete the passenger after related bookings are removed
         Node prev = null;
@@ -167,7 +156,7 @@ public class PassengerLinkedList {
             tail = prev; // Update tail if last node was deleted
         }
 
-        System.out.println("Passenger with code " + pcode + " and their bookings have been deleted.");
+        System.out.println("Passenger with code " + pcode + " have been deleted.");
     }
 
     //2.7 Search by name

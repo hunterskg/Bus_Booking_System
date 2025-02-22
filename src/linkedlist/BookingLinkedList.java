@@ -29,8 +29,6 @@ public class BookingLinkedList {
     public void setHead(Node head) {
         this.head = head;
     }
-    
-    
 
     // Node class for the linked list
     public class Node {
@@ -43,17 +41,17 @@ public class BookingLinkedList {
             this.next = null;
         }
     }
-    
+
     public boolean isAlreadyBooked(String bcode, String pcode) {
-    Node temp = head;
-    while (temp != null) {
-        if (temp.info.getBcode().equalsIgnoreCase(bcode) && temp.info.getPcode().equalsIgnoreCase(pcode)) {
-            return true;  // Booking already exists
+        Node temp = head;
+        while (temp != null) {
+            if (temp.info.getBcode().equalsIgnoreCase(bcode) && temp.info.getPcode().equalsIgnoreCase(pcode)) {
+                return true;  // Booking already exists
+            }
+            temp = temp.next;
         }
-        temp = temp.next;
+        return false;
     }
-    return false;
-}
 
     //3.1 Load data from file
     public void loadBookingFromFile() throws ParseException {
@@ -100,8 +98,16 @@ public class BookingLinkedList {
         }
     }
 
+    public boolean isEmpty() {
+        return head == null;
+    }
+
     //3.3 display
     public void traverse() {
+        if (isEmpty()) {
+            System.out.println("The list is empty");
+        }
+
         Node q = head;
         while (q != null) {
             System.out.println(q.info);
@@ -255,4 +261,26 @@ public class BookingLinkedList {
         }
     }
 
+    // check if have been booked
+    public boolean isBusBooked(String bcode) {
+        Node temp = head;
+        while (temp != null) {
+            if (temp.info.getBcode().equalsIgnoreCase(bcode)) {
+                return true; 
+            }
+            temp = temp.next;
+        }
+        return false; 
+    }
+    
+    public boolean isPassengerBooked(String pcode) {
+    Node temp = head;
+    while (temp != null) {
+        if (temp.info.getPcode().equalsIgnoreCase(pcode)) {
+            return true; 
+        }
+        temp = temp.next;
+    }
+    return false; 
+}
 }
