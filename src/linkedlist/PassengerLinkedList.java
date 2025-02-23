@@ -5,6 +5,7 @@
 package linkedlist;
 
 import java.io.*;
+import java.util.Random;
 import object.Passenger;
 
 /**
@@ -128,9 +129,9 @@ public class PassengerLinkedList {
 
         // Check if passenger have booked
         if (bookingList.isPassengerBooked(pcode)) {
-        System.err.println("Error: Cannot delete passenger " + pcode + " because they have booked.");
-        return;
-    }
+            System.err.println("Error: Cannot delete passenger " + pcode + " because they have booked.");
+            return;
+        }
 
         // Step 2: Delete the passenger after related bookings are removed
         Node prev = null;
@@ -214,5 +215,20 @@ public class PassengerLinkedList {
             temp = temp.next;
         }
         return false;
+    }
+
+    //Test data
+    public void generateTestData() {
+        Random random = new Random();
+
+        for (int i = 1; i <= 5; i++) {
+            String pcode = "P" + (random.nextInt(900)+100);
+            String name = "Passenger_" + i;
+            String phone = "09" + (random.nextInt(90000000) + 10000000);
+
+            Passenger passenger = new Passenger(pcode, name, phone);
+            addLast(passenger);
+        }
+        System.out.println("Generated 5 random passengers.");
     }
 }

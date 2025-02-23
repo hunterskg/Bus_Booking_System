@@ -5,6 +5,7 @@
 package linkedlist;
 
 import java.io.*;
+import java.util.Random;
 import object.Bus;
 
 /**
@@ -171,13 +172,13 @@ public class BusLinkedList {
         }
 
         if (prev == null) {
-            head = current.next; // Delete head
+            head = current.next;
         } else {
-            prev.next = current.next; // Delete middle or tail node
+            prev.next = current.next;
         }
 
         if (current == tail) {
-            tail = prev; // Update tail if last node was deleted
+            tail = prev;
         }
 
         System.out.println("Bus with code " + code + " and its bookings have been deleted.");
@@ -214,7 +215,10 @@ public class BusLinkedList {
         if (k < 0) {
             System.err.println("Position must be >= 0");
             return;
+        } else if(k > size()){
+            System.err.println("Position must be between " + 0 + "or " + size() + 1);
         }
+        
         if (k == 0) {
             if (head == null) {
                 head = tail = newNode;
@@ -243,39 +247,52 @@ public class BusLinkedList {
 
     //1.10 delete after position k
     public void deletePositionK(int k, BookingLinkedList bookingList) {
+
+        BusNode temp = head;
+
+        int index = 0;
+        while (temp != null && index < k - 1) {
+            temp = temp.next;
+            index++;
+        }
+
+        if (temp == null || temp.next == null) {
+            System.out.println("Out of list");
+            return;
+        }
+
+        BusNode d = temp.next;
+
+        if (bookingList.isBusBooked(d.info.getBcode())) {
+            System.err.println("Error: Cannot delete bus " + d.info.getBcode() + " because it has been booked.");
+            return;
+        }
+
         if (k < 0) {
             System.out.println("Position must be >= 0");
             return;
         }
+
         if (head == null) {
             System.out.println("The list is empty");
             return;
         }
+
         // delete first position
         if (k == 0) {
+            if (bookingList.isBusBooked(head.info.getBcode())) {
+                System.err.println("Error: Cannot delete bus " + head.info.getBcode() + " because it has been booked.");
+                return;
+            }
             head = head.next;
             if (head == null) {
                 tail = null;
             }
             return;
         }
-        BusNode temp = head;
-        int index = 0;
-        while (temp != null && index < k - 1) {
-            temp = temp.next;
-            index++;
-        }
-        if (temp == null || temp.next == null) {
-            System.out.println("Out of list");
-            return;
-        }
-        BusNode p = temp.next;
-        if (bookingList.isBusBooked(p.info.getBcode())) {
-            System.err.println("Error: Cannot delete bus " + p.info.getBcode() + " because it has been booked.");
-            return;
-        }
-        temp.next = p.next;
-        if (p == tail) {
+
+        temp.next = d.next;
+        if (d == tail) {
             tail = temp;
         }
     }
@@ -330,28 +347,25 @@ public class BusLinkedList {
     }
 
     // TESTING
-    public void generateBuses(BusLinkedList busList) {
-        String[] departingStations = {"City A", "City C", "City E", "City G", "City I",
-            "City K", "City M", "City O", "City Q", "City S"};
-        String[] arrivingStations = {"City B", "City D", "City F", "City H", "City J",
-            "City L", "City N", "City P", "City R", "City T"};
+    public void generateTestData() {
+        String[] departingStations = {"City A", "City C", "City E", "City G", "City I"};
+        String[] arrivingStations = {"City B", "City D", "City F", "City H", "City J"};
+        Random random = new Random();
 
-        for (int i = 1; i <= 10; i++) {
-            String bcode = String.format("B%03d", i); // Generates B001, B002, ..., B010
-            String bnum = String.valueOf(100 + i); // Generates bus numbers 101, 102, ..., 110
+        for (int i = 1; i <= 5; i++) {
+            String bcode = "B" + (random.nextInt(900)+100);
+            String bnum = "Bus-" + (random.nextInt(900) + 100);
             String dstation = departingStations[i - 1];
             String astation = arrivingStations[i - 1];
+            double dtime = 6.0 + random.nextInt(12);
+            int seat = 40 + random.nextInt(20);
+            int booked = random.nextInt(seat);
+            double atime = dtime + 2 + random.nextDouble() * 3;
 
-            double dtime = 5.0 + (i * 1.5); // Generates different departure times
-            int seat = 35 + (i * 5); // Generates seats from 40 to 85
-            int booked = seat / 2; // Half the seats are booked
-            double atime = dtime + (2 + (i * 0.5)); // Generates arrival time after 2-5 hours
-
-            // Create Bus object and add to list
             Bus bus = new Bus(bcode, bnum, dstation, astation, dtime, seat, booked, atime);
-            busList.addLast(bus);
+            addLast(bus);
         }
-        System.out.println("Successfully generated 10 buses.");
+        System.out.println("Generated 5 random buses.");
     }
 
 }

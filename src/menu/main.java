@@ -18,11 +18,16 @@ public class main {
         //input and display handler
         Manager manage = new Manager();
         UI ui = new UI();
-        
+
         //load file
         bookingList.loadBookingFromFile();
         busList.loadBusesFromFile();
         passList.loadPassengersFromFile();
+
+        if (busList.isEmpty() && passList.isEmpty() && bookingList.isEmpty()) {
+            busList.generateTestData();
+            passList.generateTestData();
+        }
 
         while (true) {
             int menuChoice;
@@ -71,7 +76,7 @@ public class main {
                                 break;
                             case 8:
                                 int bDeletePosition = manage.inputIntPosition("Please enter position to delete Bus: ", "Position not available", 0, busList.size());
-                                busList.deletePositionK(bDeletePosition);
+                                busList.deletePositionK(bDeletePosition, bookingList);
                                 busList.saveBusesToFile();
                                 break;
                             case 9:

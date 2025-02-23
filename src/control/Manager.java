@@ -33,13 +33,15 @@ public class Manager {
                 number = Integer.parseInt(input);
                 if (number >= min && number <= max) {
                     return number;
+                } else {
+                    System.err.println(err);
                 }
             } else {
                 System.err.println(err);
             }
         }
     }
-    
+
     public int inputIntPosition(String msg, String err, int min, int max) {
         while (true) {
             int number;
@@ -49,6 +51,8 @@ public class Manager {
                 number = Integer.parseInt(input);
                 if (number >= min && number <= max) {
                     return number;
+                } else {
+                    System.err.println(err);
                 }
             } else {
                 System.err.println(err);
@@ -63,7 +67,7 @@ public class Manager {
             String input = sc.nextLine();
             if (valid.checkDouble(input)) {
                 double number = Double.parseDouble(input);
-                if (number >= min && number <= max) {
+                if (number > min && number <= max) {
                     return number;
                 } else {
                     System.err.println(err);
@@ -95,7 +99,7 @@ public class Manager {
         String bnum = inputString("-> Enter bus number: ");
         String dstation = inputString("-> Enter departing station: ");
         String astation = inputString("-> Enter arriving station: ");
-        double dtime = inputDouble("-> Enter departing time (0-24): ", "Error: Time must be between 0 and 24.", 24, 0);
+        double dtime = inputDouble("-> Enter departing time (0-22): ", "Error: Time must be between 0 and 22.", 22, -1);
         double atime = inputDouble("-> Enter arriving time: ", "Error: Arrival time must be between departing time and 24.", 24, dtime);
 
         int seat = inputInt("-> Enter total seats: ", "Error: Total seats must be between 0 and 96", 0, 96);
@@ -145,7 +149,7 @@ public class Manager {
                 System.out.println("There aren't any bus yet");
                 break;
             }
-            
+
             while (busToSearch == null) {
                 System.err.println("Error: Bus with code " + bcode + " not found.");
                 bcode = inputString("-> Enter a valid bus code: ");
@@ -160,7 +164,7 @@ public class Manager {
                 System.out.println("There aren't any passenger yet");
                 break;
             }
-            
+
             while (passenger == null) {
                 System.err.println("Error: Passenger with code " + pcode + " not found.");
                 pcode = inputString("-> Enter a valid passenger code: ");

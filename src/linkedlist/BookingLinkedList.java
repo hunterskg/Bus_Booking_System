@@ -171,6 +171,8 @@ public class BookingLinkedList {
                 }
             }
         }
+        traverse();
+
     }
 
     //3.6 Pay booking by bcode + pcode
@@ -185,8 +187,13 @@ public class BookingLinkedList {
                     System.out.println("Your seat have alreay paid");
                 }
             }
+            if (!temp.info.getBcode().equalsIgnoreCase(bcode) || temp.info.getPcode().equalsIgnoreCase(pcode)) {
+                System.err.println("Bus or Passenger may not exist");
+                break;
+            }
             temp = temp.next;
         }
+
     }
 
     //1.12 Searchbookedby bcode (input bcode to be searched, then return  the busdata or not found; Then list all passengerswho bookedthe bus)
@@ -266,21 +273,22 @@ public class BookingLinkedList {
         Node temp = head;
         while (temp != null) {
             if (temp.info.getBcode().equalsIgnoreCase(bcode)) {
-                return true; 
+                return true;
             }
             temp = temp.next;
         }
-        return false; 
+        return false;
     }
-    
+
     public boolean isPassengerBooked(String pcode) {
-    Node temp = head;
-    while (temp != null) {
-        if (temp.info.getPcode().equalsIgnoreCase(pcode)) {
-            return true; 
+        Node temp = head;
+        while (temp != null) {
+            if (temp.info.getPcode().equalsIgnoreCase(pcode)) {
+                return true;
+            }
+            temp = temp.next;
         }
-        temp = temp.next;
+        return false;
     }
-    return false; 
-}
+
 }
