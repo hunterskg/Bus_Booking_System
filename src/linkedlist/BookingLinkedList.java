@@ -149,7 +149,7 @@ public class BookingLinkedList {
 
     //3.3 Save booking list to file
     public void saveBookingToFile() {
-        try (BufferedWriter bwriter = new BufferedWriter(new FileWriter(filePath))) {
+                                        try (BufferedWriter bwriter = new BufferedWriter(new FileWriter(filePath))) {
             Node temp = head;
             while (temp != null) {
                 bwriter.write(temp.info.toString());  // Write the booking data

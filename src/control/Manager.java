@@ -191,7 +191,6 @@ public class Manager {
                 int paid = 0; // Default value, unpaid
 
                 // Update bus availability
-                bus.setBooked(bus.getBooked() + bookedSeats);
 
                 return new Booking(bcode, pcode, odate, paid, bookedSeats);
             }

@@ -133,7 +133,6 @@ public class PassengerLinkedList {
             return;
         }
 
-        // Step 2: Delete the passenger after related bookings are removed
         Node prev = null;
         Node current = head;
 

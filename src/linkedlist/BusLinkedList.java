@@ -73,10 +73,10 @@ public class BusLinkedList {
                     String astation = parts[3].split(": ")[1].trim();
 
                     // Replace commas in numbers with dots before parsing
-                    double dtime = Double.parseDouble(parts[4].split(": ")[1].trim().replace(",", "."));
+                    double dtime = Double.parseDouble(parts[4].split(": ")[1].trim());
                     int seat = Integer.parseInt(parts[5].split(": ")[1].trim());
                     int booked = Integer.parseInt(parts[6].split(": ")[1].trim());
-                    double atime = Double.parseDouble(parts[7].split(": ")[1].trim().replace(",", "."));
+                    double atime = Double.parseDouble(parts[7].split(": ")[1].trim());
 
                     addLast(new Bus(bcode, bnum, dstation, astation, dtime, seat, booked, atime));
                 }

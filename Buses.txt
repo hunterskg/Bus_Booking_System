@@ -1,11 +1,5 @@
-Bus code: B1; Bus number: 2; dstation: FPT; astation: awd; dtime: 24.0; seat: 12; booked: 5; atime: 24.0
-Bus code: B001; Bus number: 101; dstation: City A; astation: City B; dtime: 6.5; seat: 40; booked: 20; atime: 9.0
-Bus code: B002; Bus number: 102; dstation: City C; astation: City D; dtime: 8.0; seat: 45; booked: 22; atime: 11.0
-Bus code: B003; Bus number: 103; dstation: City E; astation: City F; dtime: 9.5; seat: 50; booked: 25; atime: 13.0
-Bus code: B004; Bus number: 104; dstation: City G; astation: City H; dtime: 11.0; seat: 55; booked: 27; atime: 15.0
-Bus code: B005; Bus number: 105; dstation: City I; astation: City J; dtime: 12.5; seat: 60; booked: 30; atime: 17.0
-Bus code: B006; Bus number: 106; dstation: City K; astation: City L; dtime: 14.0; seat: 65; booked: 32; atime: 19.0
-Bus code: B007; Bus number: 107; dstation: City M; astation: City N; dtime: 15.5; seat: 70; booked: 35; atime: 21.0
-Bus code: B008; Bus number: 108; dstation: City O; astation: City P; dtime: 17.0; seat: 75; booked: 37; atime: 23.0
-Bus code: B009; Bus number: 109; dstation: City Q; astation: City R; dtime: 18.5; seat: 80; booked: 40; atime: 25.0
-Bus code: B010; Bus number: 110; dstation: City S; astation: City T; dtime: 20.0; seat: 85; booked: 42; atime: 27.0
+Bus code: B102; Bus number: Bus-613; dstation: City A; astation: City B; dtime: 17.0; seat: 41; booked: 40; atime: 20.9
+Bus code: B573; Bus number: Bus-433; dstation: City I; astation: City J; dtime: 11.0; seat: 43; booked: 1; atime: 15.8
+Bus code: B630; Bus number: Bus-537; dstation: City E; astation: City F; dtime: 8.0; seat: 52; booked: 21; atime: 10.1
+Bus code: B745; Bus number: Bus-446; dstation: City G; astation: City H; dtime: 14.0; seat: 43; booked: 8; atime: 18.1
+Bus code: B941; Bus number: Bus-932; dstation: City C; astation: City D; dtime: 6.0; seat: 51; booked: 19; atime: 9.5

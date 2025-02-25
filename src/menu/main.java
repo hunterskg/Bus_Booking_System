@@ -136,6 +136,7 @@ public class main {
                                 Booking inputBooking = manage.inputBooking(bookingList, busList, passList);
                                 bookingList.bookBus(inputBooking, busList, passList);
                                 bookingList.saveBookingToFile();
+                                busList.saveBusesToFile();
                                 break;
                             case 2:
                                 bookingList.traverse();
