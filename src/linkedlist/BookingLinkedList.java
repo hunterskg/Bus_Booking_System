@@ -117,19 +117,27 @@ public class BookingLinkedList {
 
     public void bookBus(Booking bookedBus, BusLinkedList busList, PassengerLinkedList passengerList) {
         // check if bus and passenger exists
+
+        if(bookedBus == null){
+            return;
+        }
+        
         linkedlist.BusNode foundBus = busList.searchByCode(bookedBus.getBcode());
         if (foundBus == null) {
             System.err.println("Bus does not exist");
+            return;
         }
         
         PassengerLinkedList.Node foundPassenger = passengerList.searchByPcode(bookedBus.getPcode());
         if (foundPassenger == null) {
             System.err.println("Passenger not found");
+            return;
         }
         
         // check if booking seat is less than or equals to seat of found bus
         if (bookedBus.getSeat() > (foundBus.info.getSeat() - foundBus.info.getBooked())) {
             System.err.println("Out of seats");
+            return;
         }
 
         // odate to today, and paid to 0 substract booking seat from bus seat;addbooking seat tobus booked
