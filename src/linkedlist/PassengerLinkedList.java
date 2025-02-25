@@ -17,7 +17,7 @@ public class PassengerLinkedList {
     private Node head;
     private Node tail;
 
-    String filePath = "Passengers.txt";
+    private final String filePath = "Passengers.txt";
 
     // Node class for the linked list
     public class Node {

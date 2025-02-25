@@ -115,26 +115,27 @@ public class BookingLinkedList {
         }
     }
 
-    public void bookBus(String bcode, String pcode, int seats, BusLinkedList busList, PassengerLinkedList passengerList) {
+    public void bookBus(Booking bookedBus, BusLinkedList busList, PassengerLinkedList passengerList) {
         // check if bus and passenger exists
-        linkedlist.BusNode foundBus = busList.searchByCode(bcode);
+        linkedlist.BusNode foundBus = busList.searchByCode(bookedBus.getBcode());
         if (foundBus == null) {
             System.err.println("Bus does not exist");
         }
-        PassengerLinkedList.Node foundPassenger = passengerList.searchByPcode(pcode);
+        
+        PassengerLinkedList.Node foundPassenger = passengerList.searchByPcode(bookedBus.getPcode());
         if (foundPassenger == null) {
             System.err.println("Passenger not found");
         }
+        
         // check if booking seat is less than or equals to seat of found bus
-        if (seats > (bus.getSeat() - bus.getBooked())) {
+        if (bookedBus.getSeat() > (foundBus.info.getSeat() - foundBus.info.getBooked())) {
             System.err.println("Out of seats");
         }
 
         // odate to today, and paid to 0 substract booking seat from bus seat;addbooking seat tobus booked
-        Booking booking = new Booking(bcode, pcode, 0, seats);
-        bus.setBooked(bus.getBooked() + seats);
-        bus.setSeat(bus.getSeat() - seats);
-        addLast(booking);
+        foundBus.info.setBooked(foundBus.info.getBooked() + bookedBus.getSeat());
+        addLast(bookedBus);
+
         System.out.println("Booking success");
     }
 
@@ -187,7 +188,7 @@ public class BookingLinkedList {
                     System.out.println("Your seat have alreay paid");
                 }
             }
-            if (!temp.info.getBcode().equalsIgnoreCase(bcode) || temp.info.getPcode().equalsIgnoreCase(pcode)) {
+            if (!temp.info.getBcode().equalsIgnoreCase(bcode) || !temp.info.getPcode().equalsIgnoreCase(pcode)) {
                 System.err.println("Bus or Passenger may not exist");
                 break;
             }

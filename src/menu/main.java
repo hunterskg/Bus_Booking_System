@@ -56,7 +56,6 @@ public class main {
                                 String bcodeDelete = manage.inputString("Please enter bcode to delete: ");
                                 busList.deleteByCode(bcodeDelete, bookingList);
                                 busList.saveBusesToFile();
-                                bookingList.saveBookingToFile();
                                 break;
                             case 5:
                                 busList.sortByCode();
@@ -114,7 +113,6 @@ public class main {
                                 String pcodeToDelete = manage.inputString("Please enter passenger code to delete: ");
                                 passList.deleteByPcode(pcodeToDelete, bookingList);
                                 passList.savePassengersToFile();
-                                bookingList.saveBookingToFile();
                                 break;
                             case 5:
                                 String pnameToSearch = manage.inputString("Please enter passenger name to search: ");
@@ -136,7 +134,7 @@ public class main {
                         switch (bookingChoice) {
                             case 1:
                                 Booking inputBooking = manage.inputBooking(bookingList, busList, passList);
-                                bookingList.addLast(inputBooking);
+                                bookingList.bookBus(inputBooking, busList, passList);
                                 bookingList.saveBookingToFile();
                                 break;
                             case 2:

@@ -1,1 +1,9 @@
+Bus code: B001; Passenger code: P3; Date: 25/02/2025; Paid: 0; Seat: 2
 Bus code: B1; Passenger code: p1; Date: 22/02/2025; Paid: 0; Seat: 3
+Bus code: B002; Passenger code: P3; Date: 25/02/2025; Paid: 0; Seat: 3
+Bus code: B003; Passenger code: P2; Date: 25/02/2025; Paid: 0; Seat: 2
+Bus code: B004; Passenger code: P2; Date: 25/02/2025; Paid: 0; Seat: 2
+Bus code: B005; Passenger code: P2; Date: 25/02/2025; Paid: 0; Seat: 1
+Bus code: B007; Passenger code: P2; Date: 25/02/2025; Paid: 0; Seat: 2
+Bus code: B007; Passenger code: P3; Date: 25/02/2025; Paid: 0; Seat: 3
+Bus code: B007; Passenger code: P1; Date: 25/02/2025; Paid: 0; Seat: 2
